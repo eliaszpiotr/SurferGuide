@@ -10,10 +10,10 @@ class SurfSpotForm(forms.ModelForm):
         fields = "__all__"
 
 
-class DangerForm(forms.ModelForm):
-    class Meta:
-        model = Danger
-        fields = "__all__"
+# class DangerForm(forms.ModelForm):
+#     class Meta:
+#         model = Danger
+#         fields = "__all__"
 
 
 class LoginForm(forms.Form):
@@ -33,3 +33,9 @@ class RegisterForm(forms.Form):
         if password != password2:
             raise ValidationError("Passwords are not the same!")
         return cleaned_data
+
+
+class AddPhotoForm(forms.Form):
+    class Meta:
+        model = SurfSpot
+        fields = ['image']

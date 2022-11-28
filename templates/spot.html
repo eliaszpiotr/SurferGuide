@@ -13,7 +13,8 @@
                     Spot type: {{ spot.get_spot_type_display }}<br>
                     Best wind direction: {{ spot.get_best_wind_display }}<br>
                     Swell: {{ spot.get_swell_size_display }}<br>
-                    Waves: {{ spot.get_wave_type_display }}, {{ spot.get_wave_direction_display }} direction, {{ spot.get_wave_type_display }}<br>
+                    Waves: {{ spot.get_wave_type_display }}, {{ spot.get_wave_direction_display }}
+                    direction, {{ spot.get_wave_type_display }}<br>
 
                 </p>
                 <p class="card-text">
@@ -28,7 +29,34 @@
                         {{ danger.name }}<br>
                     {% endfor %}
                 </p>
-            <p class="card-text"><span class="text-decoration-underline">Description:</span><br> {{ spot.description }}</p>
+                <p class="card-text"><span
+                        class="text-decoration-underline">Description:</span><br> {{ spot.description }}</p>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="container">
+        <h3>Photo galery:</h3>
+        {% for photo in spot.photo_set.all %}
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="{{ photo.image.url }}" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">{{ user.name }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <h4>No photos in galery :((</h4>
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-12">
+                <br><h5>Add Image:</h5>
+                <form method="post" action="{% url 'add-photo' spot.id %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="btn btn-outline-dark my-2" type="submit">
+                </form>
             </div>
         </div>
     </div>

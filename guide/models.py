@@ -111,9 +111,12 @@ class SurfSpot(models.Model):
     def get_absolute_url(self):
         return reverse('spot', kwargs={'pk': self.pk})
 
-# class PhotoGallery(models.Model):
-#     surfspot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE)
-#     image = models.ImageField(upload_to='images/', blank=True, null=True)
-#
-#     def __str__(self):
-#         return f'{self.surfspot.name} image'
+
+class PhotoGallery(models.Model):
+    surfspot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.surfspot.name} image'

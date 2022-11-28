@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
-from guide.forms import SurfSpotForm, RegisterForm, LoginForm
+from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm
 from guide.models import SurfSpot
 
 
@@ -42,7 +42,8 @@ class SpotView(View):
 
     def get(self, request, pk):
         spot = SurfSpot.objects.get(id=pk)
-        return render(request, 'spot.html', {'spot': spot})
+        form = AddPhotoForm()
+        return render(request, 'spot.html', {'spot': spot, 'form': form})
 
 
 class AddSpotView(LoginRequiredMixin, View):
@@ -103,4 +104,17 @@ class RegisterView(View):
                 login(request, user)
                 return redirect('home')
         return render(request, 'form.html', {'form': form})
+
+
+class AddPhoto(LoginRequiredMixin, View):
+
+    def post(self, request, pk):
+        form = AddPhotoForm(request.POST)
+        spot = SurfSpot.objects.get(id=pk)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.movie = spot
+            photo.author = request.user
+            photo.save()
+            return redirect('spot', spot.id)
 
