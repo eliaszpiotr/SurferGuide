@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-left: 10px">
-    <a class="navbar-brand" href="#">Surfer Guide</a>
+    <a class="navbar-brand" href="{% url 'home' %}">Surfer Guide</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -32,8 +32,26 @@
     </div>
 </nav>
 <div class="container m-4">
+    {% block last_added_spots %}
+        <div class="row">
+        <div class="col-12">
+            <h1>Surfing spots</h1>
+            {% for spot in last_added_spots %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3>{{ spot.name }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ spot.location }}, {{ spot.continent }}</h5>
+                        <p class="card-text">{{ spot.description }}</p>
+                        <a href="{{ spot.get_absolute_url }}" class="text-danger text-decoration-none">Check!</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endblock %}
     {% block content %}
     {% endblock %}
-</div>
+    </div>
 </body>
 </html>

@@ -9,7 +9,8 @@ from guide.models import SurfSpot
 class HomeView(View):
 
     def get(self, request):
-        return render(request, 'home.html')
+        last_added_spots = SurfSpot.objects.all().order_by('-id')[:3]
+        return render(request, 'home.html', {'last_added_spots': last_added_spots})
 
 
 class SpotListView(View):
