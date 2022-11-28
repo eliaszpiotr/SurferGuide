@@ -107,4 +107,12 @@ class SurfSpot(models.Model):
     danger = models.ManyToManyField(Danger, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.name}, {self.location} ({self.continent})'
+        return f'{self.name}, {self.continent}'
+
+
+class PhotoGallery(models.Model):
+    surfspot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.surfspot.name} image'
