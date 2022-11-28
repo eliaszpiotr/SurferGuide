@@ -2,9 +2,12 @@
 {% block content %}
     <div class="container my-5">
         <h3>If you know any good spots? You can share it with other surfers!</h3>
-        <a href="{% url 'add-spot' %}" class="btn-sm-dark text-dark text-decoration-none my-5">Add a new spot now!</a><br>
+        <a href="{% url 'add-spot' %}" class="btn-sm-dark text-dark text-decoration-none my-5">Add a new spot
+            now!</a><br>
     </div>
-
+    <div class="container my-5">
+        <h3>Surfing spots</h3>
+    </div>
     {% include 'list.html' with objects=spots %}
 
 {% endblock %}

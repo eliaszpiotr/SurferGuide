@@ -1,10 +1,31 @@
 {% extends 'home.html' %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <p>{{ spot }}</p>
-            </div>
+    <div class="card m-4" style="width: 32rem;">
+        <div class="card-body">
+            <h5 class="card-title my-2">{{ spot.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ spot.location }}, {{ spot.get_continent_display }}</h6>
+            <p class="card-text">Description: {{ spot.description }}</p>
+            <p class="card-text">
+                <span class="text-decoration-underline">Information about spot:</span><br>
+                Best wind direction: {{ spot.get_best_wind_display }}<br>
+                Swell: {{ spot.get_swell_size_display }}<br>
+                Wave: {{ spot.get_wave_direction_display }} directions, {{ spot.get_wave_type_display }} type<br>
+                Spot type: {{ spot.get_spot_type_display }}<br>
+            </p>
+            <p class="card-text">
+                <span class="text-decoration-underline">Additional information:</span><br>
+                Crowd factor: {{ spot.get_crowd_display }}<br>
+                Best season: {{ spot.get_best_season_display }}<br>
+                Entry surfing level: {{ spot.get_difficulty_display }}<br>
+            </p>
+            <p class="card-text">
+                <span class="text-decoration-underline">Dangers:</span><br>
+                {% for danger in spot.danger.all %}
+                    {{ danger.name }}<br>
+                {% endfor %}
+
+            </p>
+
         </div>
     </div>
 {% endblock %}

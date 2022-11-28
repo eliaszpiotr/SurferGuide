@@ -1,10 +1,9 @@
-<ul class="list-group">
+<div class="row container-sm" style="margin-right: 25px; margin-left: 25px;">
+<ul class="list-group" >
     {% for obj in objects %}
-        <li class="list-group-item ">
-            <a style="color: black; text-decoration: none;"
-               href="{{ obj.get_absolute_url }}">{{ obj }}</a>
-        </li>
-    {% empty %}
-        <h3 class="list-group-item">No results found</h3>
+        <li class="list-group-item"><a style="color: black" href="{{ obj.get_absolute_url }}">{{ obj }}</a></li>
+        {% empty %}
+        <div class="m-4" role="alert"><h3>No results found</h3></div>
     {% endfor %}
 </ul>
+</div>

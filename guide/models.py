@@ -1,6 +1,5 @@
 from django.db import models
 
-
 # Create your models here.
 from django.urls import reverse
 
@@ -32,16 +31,16 @@ class SurfSpot(models.Model):
 
     # conditions
     class Wind(models.TextChoices):
-        N = 'N', 'North'
-        NE = 'NE', 'North East'
-        E = 'E', 'East'
-        SE = 'SE', 'South East'
-        S = 'S', 'South'
-        SW = 'SW', 'South West'
-        W = 'W', 'West'
-        NW = 'NW', 'North West'
+        NORTH = 'N', 'North'
+        NORTH_EAST = 'NE', 'North-East'
+        EAST = 'E', 'East'
+        SOUTH_EAST = 'SE', 'South-East'
+        SOUTH = 'S', 'South'
+        SOUTH_WEST = 'SW', 'South-West'
+        WEST = 'W', 'West'
+        NORTH_WEST = 'NW', 'North-West'
 
-    best_wind = models.CharField(max_length=2, choices=Wind.choices)
+    best_wind = models.CharField(max_length=13, choices=Wind.choices)
 
     class WaveDirection(models.TextChoices):
         L = 'L', 'Left'
@@ -51,13 +50,10 @@ class SurfSpot(models.Model):
     wave_direction = models.CharField(max_length=1, choices=WaveDirection.choices, default='B')
 
     class SpotType(models.TextChoices):
-        B = 'B', 'Beach'
-        R = 'R', 'Reef'
-        P = 'P', 'Point'
-        H = 'H', 'Headland'
-        C = 'C', 'Cove'
-        L = 'L', 'Lagoon'
-        O = 'O', 'Other'
+        B = 'B', 'Beach break'
+        R = 'R', 'Reef break'
+        P = 'P', 'Point break'
+        O = 'O', 'Other break'
 
     spot_type = models.CharField(max_length=1, choices=SpotType.choices)
 
@@ -77,7 +73,7 @@ class SurfSpot(models.Model):
         MASSIVE = 5, '12+ ft.'
         SUPERMASSIVE = 6, '20+ ft.'
 
-    swell_size = models.IntegerField(choices=WaveHeight.choices)
+    swell_size = models.IntegerField(choices=WaveHeight.choices )
 
     # additional info
 
@@ -113,7 +109,6 @@ class SurfSpot(models.Model):
 
     def get_absolute_url(self):
         return reverse('spot', kwargs={'pk': self.pk})
-
 
 # class PhotoGallery(models.Model):
 #     surfspot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE)
