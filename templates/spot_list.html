@@ -1,13 +1,94 @@
 {% extends 'home.html' %}
 {% block content %}
-    <div class="container my-5">
+
+    <div class="container">
+        <a href="{% url 'home' %}" class="btn btn-dark" style="margin-top: 15px; margin-bottom: 20px">Back</a>
+    </div>
+
+    <div class="container my-3">
         <h3>If you know any good spots? You can share it with other surfers!</h3>
-        <a href="{% url 'add-spot' %}" class="btn-sm-dark text-dark text-decoration-none my-5">Add a new spot
-            now!</a><br>
+        <h4><a href="{% url 'add-spot' %}" class="btn-sm-dark text-danger text-decoration-none my-4" >Add a new spot
+            now!</a></h4>
     </div>
-    <div class="container my-5">
-        <h3>Surfing spots</h3>
+    <div class="container" style="margin-top: 30px">
+        <h3>Surfing spots around the World:</h3>
     </div>
-    {% include 'list.html' with objects=spots %}
+    <div class="container">
+        <div class="row">
+            {% if europe %}
+                <h3 class="text-decoration-underline" style="margin-top: 10px;">Europe</h3>
+                <div class="col-sm-6">
+                    {% for spot in europe %}
+                        <div class="card my-2">
+                            <div class="card-body">
+                                <a href="{{ spot.get_absolute_url }}" class="text-dark text-decoration-none">{{ spot.name }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if asia %}
+                <h3 class="text-decoration-underline" style="margin-top: 15px">Asia</h3>
+                <div class="col-sm-6">
+                    {% for spot in asia %}
+                        <div class="card my-2">
+                            <div class="card-body">
+                                <a href="{{ spot.get_absolute_url }}" class="text-dark text-decoration-none">{{ spot.name }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if africa %}
+                <h3 class="text-decoration-underline" style="margin-top: 15px">Africa</h3>
+                <div class="col-sm-6">
+                    {% for spot in africa %}
+                        <div class="card my-2">
+                            <div class="card-body">
+                                <a href="{{ spot.get_absolute_url }}" class="text-dark text-decoration-none">{{ spot.name }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if north_america %}
+                <h3 class="text-decoration-underline" style="margin-top: 15px">North America</h3>
+                <div class="col-sm-6">
+                    {% for spot in north_america %}
+                        <div class="card my-2">
+                            <div class="card-body">
+                                <a href="{{ spot.get_absolute_url }}" class="text-dark text-decoration-none">{{ spot.name }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if south_america %}
+                <h3 class="text-decoration-underline" style="margin-top: 15px">South America</h3>
+                <div class="col-sm-6">
+                    {% for spot in south_america %}
+                        <div class="card my-2">
+                            <div class="card-body">
+                                <a href="{{ spot.get_absolute_url }}" class="text-dark text-decoration-none">{{ spot.name }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if oceania %}
+                <h3 class="text-decoration-underline" style="margin-top: 15px">Oceania</h3>
+                <div class="col-sm-6">
+                    {% for spot in oceania %}
+                        <div class="card my-2">
+                            <div class="card-body">
+                                <a href="{{ spot.get_absolute_url }}" class="text-dark text-decoration-none">{{ spot.name }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
 
 {% endblock %}

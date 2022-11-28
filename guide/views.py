@@ -16,8 +16,23 @@ class HomeView(View):
 class SpotListView(View):
 
     def get(self, request):
-        spots = SurfSpot.objects.all()
-        return render(request, 'spot_list.html', {'spots': spots})
+        europe = SurfSpot.objects.filter(continent='EU')
+        asia = SurfSpot.objects.filter(continent='AS')
+        africa = SurfSpot.objects.filter(continent='AF')
+        north_america = SurfSpot.objects.filter(continent='NA')
+        south_america = SurfSpot.objects.filter(continent='SA')
+        oceania = SurfSpot.objects.filter(continent='OC')
+
+        context = {
+            'europe': europe,
+            'asia': asia,
+            'africa': africa,
+            'north_america': north_america,
+            'south_america': south_america,
+            'oceania': oceania,
+        }
+        return render(request, 'spot_list.html', context)
+
 
 
 class SpotView(View):

@@ -43,7 +43,7 @@
                     <h3>{{ spot.name }}</h3>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ spot.location }}, {{ spot.continent }}</h5>
+                    <h5 class="card-title">{{ spot.location }}, {{ spot.get_continent_display }}</h5>
                     <p class="card-text">{{ spot.description }}</p>
                     <a href="{{ spot.get_absolute_url }}" class="text-danger text-decoration-none">Check!</a>
                 </div>

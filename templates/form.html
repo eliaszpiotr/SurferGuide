@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <h3 style="color: #cc3636">{{ message }}</h3>
+        {{ form.as_p }}
+        <input class="btn btn-outline-dark my-2" type="submit">
+    </form>
+    <div>
+        <br><h6><a href="{% url 'register' %}" style="color: black">{{ register }}</a></h6>
+    </div>
+
+
+{% endblock %}
