@@ -5,6 +5,6 @@ urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
     path('add-spot/', views.AddSpotView.as_view(), name='add-spot'),
     path('spot-list/', views.SpotListView.as_view(), name='spot-list'),
-
+    path('spot/<int:pk>/', views.SpotView.as_view(), name='spot'),
 
 ]

@@ -1,33 +1,32 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+from django.views import View
 from guide.forms import SurfSpotForm, DangerForm
-
 
 # Create your views here.
 from guide.models import SurfSpot
 
 
-class HomeView(TemplateView):
-    template_name = 'home.html'
+class HomeView(View):
 
     def get(self, request):
-        return render(request, self.template_name)
+        return render(request, 'home.html')
 
 
-class SpotListView(TemplateView):
+class SpotListView(View):
 
     def get(self, request):
         spots = SurfSpot.objects.all()
         return render(request, 'spot_list.html', {'spots': spots})
 
-class SpotView(TemplateView):
-    template_name = 'spot.html'
 
-    def get(self, request):
-        return render(request, self.template_name)
+class SpotView(View):
+
+    def get(self, request, pk):
+        spot = SurfSpot.objects.get(id=pk)
+        return render(request, 'spot.html', {'spot': spot})
 
 
-class AddSpotView(TemplateView):
+class AddSpotView(View):
 
     def get(self, request):
         form = SurfSpotForm()
