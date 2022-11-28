@@ -14,7 +14,7 @@ class Danger(models.Model):
 
 class SurfSpot(models.Model):
     # main info
-    is_verified = models.BooleanField(default=False)
+
     name = models.CharField(max_length=64)
     description = models.TextField()
     location = models.CharField(max_length=64)

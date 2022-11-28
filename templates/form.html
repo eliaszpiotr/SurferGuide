@@ -1,14 +1,26 @@
-{% extends 'base.html' %}
+{% extends 'home.html' %}
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <h3 style="color: #cc3636">{{ message }}</h3>
-        {{ form.as_p }}
-        <input class="btn btn-outline-dark my-2" type="submit">
-    </form>
-    <div>
-        <br><h6><a href="{% url 'register' %}" style="color: black">{{ register }}</a></h6>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="margin-top: 15px;">
+                <h1>Login:</h1>
+
+            </div>
+        </div>
+        <div class="container form-control" style="margin-top: 15px">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <form method="post">
+                        {% csrf_token %}
+                        <h3 style="color: #cc3636">{{ message }}</h3>
+                        {{ form.as_p }}
+                        <input class="btn btn-outline-dark my-2" type="submit" value="Submit">
+                    </form>
+                    <div>
+                        <br><h6><a href="{% url 'register' %}" style="color: black">{{ register }}</a></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
 {% endblock %}

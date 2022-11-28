@@ -28,6 +28,18 @@
             <li class="nav-item">
                 <a class="nav-link " href="#">About Surfing</a>
             </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item" style="margin-left: 950px;">
+                    <a class="nav-link" href="">Profile</a>
+                </li>
+                <li class="nav-item" style="margin-left: 10px;">
+                    <a class="nav-link text-decoration-underline" href="{% url 'logout' %}">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link text-decoration-underline " href="{% url 'login' %} " style="margin-left: 1000px;">Login</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

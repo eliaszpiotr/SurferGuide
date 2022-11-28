@@ -1,9 +1,13 @@
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
-from guide.forms import SurfSpotForm, DangerForm
+from guide.forms import SurfSpotForm, RegisterForm, LoginForm
+from guide.models import SurfSpot
+
 
 # Create your views here.
-from guide.models import SurfSpot
 
 
 class HomeView(View):
@@ -34,7 +38,6 @@ class SpotListView(View):
         return render(request, 'spot_list.html', context)
 
 
-
 class SpotView(View):
 
     def get(self, request, pk):
@@ -42,7 +45,7 @@ class SpotView(View):
         return render(request, 'spot.html', {'spot': spot})
 
 
-class AddSpotView(View):
+class AddSpotView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = SurfSpotForm()
@@ -54,3 +57,50 @@ class AddSpotView(View):
             form.save()
             return redirect('spot-list')
         return redirect('spot-list')
+
+
+class LoginView(View):
+
+    def get(self, request):
+        form = LoginForm()
+        register = 'Don\'t have an account? Register here!'
+        return render(request, 'form.html', {'form': form, 'register': register})
+
+    def post(self, request):
+        form = LoginForm(request.POST)
+        message = ''
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            message = 'Invalid username or password!'
+        return render(request, 'form.html', {'form': form, 'message': message})
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('home')
+
+
+class RegisterView(View):
+    def get(self, request):
+        form = RegisterForm()
+        return render(request, 'form.html', {'form': form})
+
+    def post(self, request):
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = User.objects.create(username=username, password=password)
+            user.set_password(password)
+            user.save()
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+        return render(request, 'form.html', {'form': form})
+
