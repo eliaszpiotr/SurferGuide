@@ -45,9 +45,8 @@
                             <p class="card-text">️
                                 <span class="text-danger"
                                       style="font-size: 20px; font-weight: bold">Dangers!</span><br>
-
                                 {% for danger in spot.danger.all %}
-                                    ️⚠️ {{ danger.name }}<br>
+                                    &nbsp{{ danger.name }}<br>
                                 {% endfor %}
                             </p>
                         </td>
