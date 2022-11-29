@@ -3,46 +3,47 @@
     <div class="container">
         <div class="col">
             <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
-            <a href="{% url 'profile-settings' %}" class="btn btn-outline-dark" style="margin-top: 15px; margin-left: 15px;" >Profile Settings</a>
+            <a href="{% url 'profile-settings' user.id %}" class="btn btn-outline-dark"
+               style="margin-top: 15px; margin-left: 15px;">Profile Settings</a>
         </div>
 
     </div>
+
     <div class="container my-4">
         <div>
-            <span style="font-weight: bold; font-size: 25px">@{{ user.username }}</span><br>
-            {% if info.bio != None %}
-                {{ info.bio }}<br>
-            {% endif %}
+            <span style="font-weight: bold; font-size: 25px">@{{ user.username }}</span><span
+                style="margin-left: 10px;">{% if info.country %}{{ info.country }}{% endif %} {% if info.continent %},
+            {{ info.get_continent_display }}{% endif %}</span><br>
             {% if info.skill_level != None %}
-                <br><span style="font-weight: bold; font-size: 15px;">{{ info.get_skill_level_display }} surfer</span>
+                <span style="font-size: 15px; color: gray">{{ info.get_skill_level_display }} surfer</span>
+                <br>{% endif %}
+            {% if info.bio != None %}
+                <br>{{ info.bio }}<br>
             {% endif %}
         </div>
         <br>
         {% if info %}
             <div class="card">
-                {% if info.avatar %}
-                    <img class="rounded m-4" style="margin: 15px; height: 250px; width: 250px; object-fit: cover;"
-                         src=""
-                         alt="{{ user.username }}'s profile picture">
-                {% endif %}
                 <div class="card-body">
                     {% if info.home_spot %}
                         <p class="card-text">
-                            Home spot: <a class="text-dark"
-                                          href="{% url 'spot' info.home_spot.id %}">{{ info.home_spot }}</a>
+                            <span style="font-weight: bold;">Home spot:</span> <a
+                                class="text-secondary text-decoration-none"
+                                href="{% url 'spot' info.home_spot.id %}">{{ info.home_spot }}</a>
                         </p>
                     {% endif %}
-                    {#                    {% if info.visited_spots %}#}
-                    {#                        <p class="card-text">#}
-                    {#                            Visited spots:<br>#}
-                    {#                            {% for spot in info.visited_spots.name %}#}
-                    {#                                {{ spot }}<br>#}
-                    {#                            {% endfor %}#}
-                    {#                        </p>#}
-                    {#                    {% endif %}#}
                     {% if info.board %}
                         <p class="card-text">
-                            Board: {{ info.board }}
+                            <span style="font-weight: bold;">Board:</span> {{ info.board }}
+                        </p>
+                    {% endif %}
+                    {% if visited_spots %}
+                        <p class="card-text">
+                            <span style="font-weight: bold;">Visited spots:</span><br>
+                            {% for spot in visited_spots %}
+                                <a href="{% url 'spot' spot.id %}"
+                                   class="text-decoration-none text-secondary">{{ spot }}</a><br>
+                            {% endfor %}
                         </p>
                     {% endif %}
                     {% if info.achievements %}
@@ -56,8 +57,26 @@
                 </div>
             </div>
         {% endif %}
-
-
     </div>
+
+    {% if photos %}
+        <div class="container my-4">
+            <div class="col-m-9">
+                <div class="row my-2">
+                    <h3>Posted Photos:</h3>
+                    {% for photo in photos %}
+                        <div class="card m-2" style="width: 18rem;">
+                            <img class="rounded" style="margin: 15px; height: 223px; width: 233px; object-fit: cover;"
+                                 src="{{ photo.image.url }}" alt="{{ photo }}">
+                            <div class="card-body">
+                                <p class="card-text">@{{ photo.user.username }}</p>
+                                <p class="card-text"><a href="{% url 'spot' photo.surfspot.id %}" class="text-secondary text-decoration-none">{{ photo.surfspot }},</a><br>{{ photo.date }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
 {% endblock %}

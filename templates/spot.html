@@ -40,14 +40,14 @@
     <div class="container">
         <div class="col-m-9">
             <div class="row my-2">
-                <h3>Photo galery:<br><span><a class="btn btn-outline-dark my-2" href="{% url 'add-photo' spot.id %}">Post Photo!</a></span>
+                <h3>Photo galery:<span style="margin-left: 25px;"><a class="btn btn-outline-dark my-2" href="{% url 'add-photo' spot.id %}">Post Photo!</a></span>
                 </h3>
                 {% for photo in photos %}
                     <div class="card m-2" style="width: 18rem;">
                         <img class="rounded" style="margin: 15px; height: 223px; width: 233px; object-fit: cover;"
                              src="{{ photo.image.url }}" alt="{{ photo }}">
                         <div class="card-body">
-                            <p class="card-text">@{{ user.username }}</p>
+                            <p class="card-text"><a href="{% url 'profile' photo.user_id %}" class="text-dark text-decoration-none">@{{ photo.user.username }}</a></p>
                             <p class="card-text">{{ photo.date }}</p>
                         </div>
                     </div>

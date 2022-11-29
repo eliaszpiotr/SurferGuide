@@ -15,7 +15,8 @@ class HomeView(View):
 
     def get(self, request):
         last_added_spots = SurfSpot.objects.all().order_by('-id')[:3]
-        return render(request, 'home.html', {'last_added_spots': last_added_spots})
+        last_added_photos = Photo.objects.all().order_by('-id')[:3]
+        return render(request, 'home.html', {'last_added_spots': last_added_spots, 'last_added_photos': last_added_photos})
 
 
 class SpotListView(View):
@@ -44,9 +45,9 @@ class SpotView(View):
     def get(self, request, pk):
         spot = SurfSpot.objects.get(id=pk)
         photos = Photo.objects.filter(surfspot=spot)
-        form = AddPhotoForm()
-        form_2 = AddPhotoForm()
-        return render(request, 'spot.html', {'spot': spot, 'form': form, 'photos': photos, 'form_2': form_2})
+        users = User.objects.all()
+
+        return render(request, 'spot.html', {'spot': spot, 'photos': photos, 'users': users})
 
 
 class AddSpotView(LoginRequiredMixin, View):
@@ -79,7 +80,7 @@ class LoginView(View):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('profile')
+                return redirect('home')
             message = 'Invalid username or password!'
         return render(request, 'login.html', {'form': form, 'message': message})
 
@@ -107,7 +108,7 @@ class RegisterView(View):
             info.save()
             if user is not None:
                 login(request, user)
-                return redirect('profile')
+                return redirect('home')
         return render(request, 'login.html', {'form': form})
 
 
@@ -127,17 +128,22 @@ class AddPhotoView(LoginRequiredMixin, CreateView):
 
 class ProfileView(LoginRequiredMixin, View):
 
-    def get(self, request):
+    def get(self, request, pk):
+        user = User.objects.get(id=pk)
         user_id = request.user.id
         info = UserInformation.objects.get(user_id=user_id)
-        return render(request, 'profile.html', {'info': info})
+        photos = Photo.objects.filter(user_id=user_id)
+        visited_spots = UserInformation.objects.get(user_id=user_id).visited_spots.all()
+
+        return render(request, f'profile.html', {'photos': photos, 'info': info, 'visited_spots': visited_spots})
 
 
 class ProfileSettingsView(LoginRequiredMixin, UpdateView):
+    pass
     model = UserInformation
-    fields = ['avatar', 'bio', 'home_spot', 'skill_level', 'board', 'achievements', 'visited_spots']
+    fields = ['country', 'continent', 'bio', 'home_spot', 'skill_level', 'board', 'achievements', 'visited_spots']
     template_name = 'profile_settings.html'
-    success_url = '/profile'
+    success_url = f'/profile'
 
     def get_object(self, queryset=None):
         user_id = self.request.user.id

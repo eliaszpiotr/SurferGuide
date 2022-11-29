@@ -18,6 +18,7 @@ class SurfSpot(models.Model):
     name = models.CharField(max_length=64)
     description = models.TextField()
     location = models.CharField(max_length=64)
+    country = models.CharField(max_length=64, blank=True, null=True)
 
     class Continent(models.TextChoices):
         AFRICA = 'AF', 'Africa'
@@ -134,7 +135,8 @@ class Comment(models.Model):
 
 class UserInformation(models.Model):
     user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to='images/', blank=True, null=True)
+    country = models.CharField(max_length=64, blank=True, null=True)
+    continent = models.CharField(choices=SurfSpot.Continent.choices, max_length=2, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     home_spot = models.ForeignKey(SurfSpot, on_delete=models.SET_NULL, blank=True, null=True)
     board = models.CharField(max_length=64, blank=True, null=True)
