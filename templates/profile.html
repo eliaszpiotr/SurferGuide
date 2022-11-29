@@ -3,8 +3,13 @@
     <div class="container">
         <div class="col">
             <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
-            <a href="{% url 'profile-settings' user.id %}" class="btn btn-outline-dark"
-               style="margin-top: 15px; margin-left: 15px;">Profile Settings</a>
+            {% if logged_user.is_authenticated %}
+                {% if logged_user.username == user.username %}
+                    <a href="{% url 'profile-settings' user.id %}" class="btn btn-outline-dark"
+                       style="margin-top: 15px; margin-left: 15px;">Profile Settings</a>
+                {% endif %}
+
+            {% endif %}
         </div>
 
     </div>
@@ -70,7 +75,9 @@
                                  src="{{ photo.image.url }}" alt="{{ photo }}">
                             <div class="card-body">
                                 <p class="card-text">@{{ photo.user.username }}</p>
-                                <p class="card-text"><a href="{% url 'spot' photo.surfspot.id %}" class="text-secondary text-decoration-none">{{ photo.surfspot }},</a><br>{{ photo.date }}</p>
+                                <p class="card-text"><a href="{% url 'spot' photo.surfspot.id %}"
+                                                        class="text-secondary text-decoration-none">{{ photo.surfspot }},</a><br>{{ photo.date }}
+                                </p>
                             </div>
                         </div>
                     {% endfor %}

@@ -28,9 +28,9 @@
             <li class="nav-item">
                 <a class="nav-link " href="#">About Surfing</a>
             </li>
-            {% if user.is_authenticated %}
+            {% if logged_user.is_authenticated %}
                 <li class="nav-item" style="margin-left: 950px;">
-                    <a class="nav-link" href="{% url 'profile' user.id %}">@{{ user.username }}</a>
+                    <a class="nav-link" href="{% url 'profile' logged_user.id %}">@{{ logged_user.username }}</a>
                 </li>
                 <li class="nav-item" style="margin-left: 10px;">
                     <a class="nav-link text-decoration-underline" href="{% url 'logout' %}">Logout</a>
