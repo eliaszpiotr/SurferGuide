@@ -1,14 +1,21 @@
 {% extends 'home.html' %}
 {% block content %}
     <div class="container">
-        <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
+        <div class="col">
+            <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
+            <a href="{% url 'profile-settings' %}" class="btn btn-outline-dark" style="margin-top: 15px; margin-left: 15px;" >Profile Settings</a>
+        </div>
+
     </div>
     <div class="container my-4">
         <div>
             <span style="font-weight: bold; font-size: 25px">@{{ user.username }}</span><br>
-            {{ info.bio }}<br>
-            <br><span style="font-weight: bold; font-size: 15px;">{{ info.get_skill_level_display }} surfer</span>
-
+            {% if info.bio != None %}
+                {{ info.bio }}<br>
+            {% endif %}
+            {% if info.skill_level != None %}
+                <br><span style="font-weight: bold; font-size: 15px;">{{ info.get_skill_level_display }} surfer</span>
+            {% endif %}
         </div>
         <br>
         {% if info %}
@@ -19,36 +26,38 @@
                          alt="{{ user.username }}'s profile picture">
                 {% endif %}
                 <div class="card-body">
-                {% if info.home_spot %}
-                    <p class="card-text">
-                        Home spot: <a class="text-dark"
-                                      href="{% url 'spot' info.home_spot.id %}">{{ info.home_spot }}</a>
-                    </p>
-                {% endif %}
-                {% if info.visited_spots %}
-                    <p class="card-text">
-                        Visited spots:<br>
-                        {% for spot in info.visited_spots.name %}
-                            {{ spot }}<br>
-                        {% endfor %}
-                    </p>
-                {% endif %}
-                {% if info.board %}
-                    <p class="card-text">
-                        Board: {{ info.board }}
-                    </p>
-                {% endif %}
-                {% if info.achievements %}
-                    <p class="card-text">
-                        Achievements:<br>
-                        {% for achievement in info.achievements %}
-                            {{ achievement }}<br>
-                        {% endfor %}
-                    </p>
-                {% endif %}
+                    {% if info.home_spot %}
+                        <p class="card-text">
+                            Home spot: <a class="text-dark"
+                                          href="{% url 'spot' info.home_spot.id %}">{{ info.home_spot }}</a>
+                        </p>
+                    {% endif %}
+                    {#                    {% if info.visited_spots %}#}
+                    {#                        <p class="card-text">#}
+                    {#                            Visited spots:<br>#}
+                    {#                            {% for spot in info.visited_spots.name %}#}
+                    {#                                {{ spot }}<br>#}
+                    {#                            {% endfor %}#}
+                    {#                        </p>#}
+                    {#                    {% endif %}#}
+                    {% if info.board %}
+                        <p class="card-text">
+                            Board: {{ info.board }}
+                        </p>
+                    {% endif %}
+                    {% if info.achievements %}
+                        <p class="card-text">
+                            Achievements:<br>
+                            {% for achievement in info.achievements %}
+                                {{ achievement }}<br>
+                            {% endfor %}
+                        </p>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}
+
+
     </div>
 
 {% endblock %}

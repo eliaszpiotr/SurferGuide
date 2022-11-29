@@ -42,7 +42,23 @@ class AddPhotoForm(forms.Form):
 
 
 class UserInfoForm(forms.Form):
-    class Meta:
-        model = UserInformation
-        fields = "__all__"
+
+    bio = forms.CharField(max_length=256, required=False)
+
+    avatar = forms.ImageField(required=False)
+
+    home_spot = forms.ModelChoiceField(queryset=SurfSpot.objects.all(), required=False)
+
+    skill_level = forms.ChoiceField(choices=UserInformation.SkillLevel.choices, required=False)
+
+    board = forms.CharField(max_length=256, required=False)
+
+    achievements = forms.CharField(max_length=256, required=False)
+
+
+    # visited_spots = forms.ModelMultipleChoiceField(queryset=SurfSpot.objects.all(), required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
 

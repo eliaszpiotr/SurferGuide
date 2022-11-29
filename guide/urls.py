@@ -11,5 +11,6 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('add_photo/<int:pk>/', views.AddPhotoView.as_view(), name='add-photo'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('profile_settings/', views.ProfileSettingsView.as_view(), name='profile-settings'),
 
 ]
