@@ -47,14 +47,14 @@
 
 {% block content %}
 
-    <div class="container m-4">
+    <div class="container ">
         <div class="col">
             <div class="row my-2">
                 <h1>Latest photos</h1>
                 {% for photo in last_added_photos %}
-                    <div class="card m-2" style="width: 18rem;">
-                        <img class="rounded m-2"
-                             style="margin-top: 15px; height: 223px; width: 233px; object-fit: cover;"
+                    <div class="card m-3" style="width: 18rem;">
+                        <img class="rounded m-3"
+                             style="margin: 15px; height: 223px; width: 233px; object-fit: cover;"
                              src="{{ photo.image.url }}" alt="{{ photo }}">
                         <div class="card-body">
                             <p class="card-text"><a href="{% url 'profile' photo.user_id %}"
@@ -69,12 +69,12 @@
             </div>
         </div>
     </div>
-    <div class="container m-4">
+    <div class="container ">
         <div class="row ">
             <div class="col-12">
                 <h1>Recently added surf spots</h1>
                 {% for spot in last_added_spots %}
-                    <div class="card my-3" style="width: 1197px;">
+                    <div class="card my-3" style="width: 1250px;">
                         <div class="card-header">
                             <h3>{{ spot.name }}</h3>
                         </div>

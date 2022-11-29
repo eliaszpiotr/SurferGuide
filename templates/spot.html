@@ -1,102 +1,162 @@
 {% extends 'home.html' %}
 {% block content %}
-    <div class="container" style="margin-left: 25px">
+    <div class="container">
         <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
     </div>
 
-    <div class="container m-4">
-        <div class="card my-4" style="width: 32rem;">
+    <div class="container">
+        <div class="card my-4">
             <div class="card-body">
                 <h2 class="card-title my-2">{{ spot.name }} </h2>
                 <h6 class="card-subtitle mb-2 text-muted">{{ spot.location }}, {{ spot.get_continent_display }}</h6>
-                <p class="card-text">
-                    <span class="text-decoration-underline">Information about spot:</span><br>
-                    Spot type: {{ spot.get_spot_type_display }}<br>
-                    Best wind direction: {{ spot.get_best_wind_display }}<br>
-                    Swell: {{ spot.get_swell_size_display }}<br>
-                    Waves: {{ spot.get_wave_type_display }}, {{ spot.get_wave_direction_display }}
-                    direction<br>
-                </p>
-                <p class="card-text">
-                    <span class="text-decoration-underline">Additional information:</span><br>
-                    Crowd factor: {{ spot.get_crowd_display }}<br>
-                    Best season: {{ spot.get_best_season_display }}<br>
-                    Entry surfing level: {{ spot.get_difficulty_display }}<br>
-                </p>
-                <p class="card-text">
-                    <span class="text-decoration-underline">Dangers:</span><br>
-                    {% for danger in spot.danger.all %}
-                        {{ danger.name }}<br>
-                    {% endfor %}
-                </p>
-                <div class="card-text" style="overflow: auto; max-height: 150px;"><span
-                        class="text-decoration-underline">Description:</span><br>{{ spot.description }}
+                <table class="table table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <p class="card-text">
+                                <span style="font-size: 20px; font-weight: bold;">Information about spot</span><br>
+                                Spot type: <span class="text-secondary">{{ spot.get_spot_type_display }}</span><br>
+                                Best wind direction: <span
+                                    class="text-secondary">{{ spot.get_best_wind_display }}</span><br>
+                                Swell: <span class="text-secondary">{{ spot.get_swell_size_display }}</span><br>
+                                Waves: <span
+                                    class="text-secondary">{{ spot.get_wave_type_display }}, {{ spot.get_wave_direction_display }}
+                                direction</span><br>
+                            </p>
+                        </td>
+                        <td>
+                            <p class="card-text">
+                                <span style="font-size: 20px; font-weight: bold">Additional information</span><br>
+                                Crowd factor: <span class="text-secondary">{{ spot.get_crowd_display }}</span><br>
+                                Best season: <span class="text-secondary">{{ spot.get_best_season_display }}</span><br>
+                                Entry surfing level: <span
+                                    class="text-secondary">{{ spot.get_difficulty_display }}</span><br>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="card-text">️
+                                <span class="text-danger"
+                                      style="font-size: 20px; font-weight: bold">Dangers!</span><br>
+
+                                {% for danger in spot.danger.all %}
+                                    ️⚠️ {{ danger.name }}<br>
+                                {% endfor %}
+                            </p>
+                        </td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="card-text" style="overflow: auto; max-height: 150px;">
+                    <span style="font-size: 20px; font-weight: bold">Description:</span><br>{{ spot.description }}
                 </div>
             </div>
 
 
         </div>
     </div>
-
-    <div class="container m-4">
-        <div class="col-m-9">
-            <div class="row my-2">
-                <h3>Photo galery:</h3>
-                {% for photo in photos %}
-                    <div class="card m-2" style="width: 18rem;">
-                        <img class="rounded" style="margin: 15px; height: 223px; width: 233px; object-fit: cover;"
-                             src="{{ photo.image.url }}" alt="{{ photo }}">
-                        <div class="card-body">
-                            <p class="card-text"><a href="{% url 'profile' photo.user_id %}"
-                                                    class="text-dark text-decoration-none">@{{ photo.user.username }}</a>
-                            </p>
-                            <p class="card-text">{{ photo.date }}</p>
+    {% if photos %}
+        <div class="container">
+            <div class="col-m-9">
+                <div class="row my-2">
+                    <h3>Photo galery:</h3>
+                    {% for photo in photos %}
+                        <div class="card m-2" style="width: 18rem;">
+                            <img class="rounded m-3"
+                                 style="margin-top: 15px; height: 223px; width: 233px; object-fit: cover;"
+                                 src="{{ photo.image.url }}" alt="{{ photo }}">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <a href="{% url 'profile' photo.user_id %}"
+                                       class="text-dark text-decoration-none">
+                                        @{{ photo.user.username }}
+                                    </a>
+                                </p>
+                                <p class="card-text">
+                                    <span class="text-secondary">{{ photo.surfspot }}</span>,<br>{{ photo.date }}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                {% empty %}
-                    <h4>No photos in galery :((</h4>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    <div class="container m-4">
-        <div class="row my-2">
-            <div class="col-m-9">
-                <h3>Post your photos from there!</h3>
-                <form method="post" action="{% url 'add-photo' spot.id %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input class="my-2" type="file" name="image" id="image"><br>
-                    {{ photo_form.as_p }}
-                    <input class="btn btn-outline-dark my-2" type="submit" value="Post!">
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="container m-4">
-        <div class="row my-2">
-            <div class="col-m-9">
-                <h1>What surfers think about that spot:</h1>
-                <ul class="list-group">
-                    {% for comment in comments %}
-                        <li class="list-group-item my-2">
-                            <b><a class="text-decoration-none text-dark" href="{% url 'profile' comment.user.id %}">@{{ comment.user }}:</a></b> {{ comment.text }}<br>{{ comment.date }}</li>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <br>
-                <h3>You can also share your opinion!</h3><br>
-                <form class="my-2" method="post" action="{% url 'add-comment' spot.id %}">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input class="btn btn-outline-dark my-2" type="submit" value="Share!">
-                </form>
+        <div class="container my-4">
+            <div class="row my-2">
+                <div class="col-m-9">
+                    <h3>Post your photos from there!</h3>
+                    <form method="post" action="{% url 'add-photo' spot.id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input class="my-2" type="file" name="image" id="image"><br>
+                        {{ photo_form.as_p }}
+                        <input class="btn btn-outline-dark my-2" type="submit" value="Post!">
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    {% else %}
+        <div class="container my-4">
+            <div class="row my-2">
+                <div class="col-m-9">
+                    <h3>Be the first person to share a photo from this spot!</h3>
+                    <form method="post" action="{% url 'add-photo' spot.id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input class="my-2" type="file" name="image" id="image"><br>
+                        {{ photo_form.as_p }}
+                        <input class="btn btn-outline-dark my-2" type="submit" value="Post!">
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if comments %}
+        <div class="container">
+            <div class="row my-2">
+                <div class="col-m-9">
+                    <h1>What surfers think about that spot:</h1>
+                    <ul class="list-group">
+                        {% for comment in comments %}
+                            <li class="list-group-item my-2">
+                                <b><a class="text-decoration-none text-dark" href="{% url 'profile' comment.user.id %}">@{{ comment.user }}:</a></b> {{ comment.text }}<br>{{ comment.date }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h3>You can share your opinion about this spot!</h3><br>
+                    <form class="my-2" method="post" action="{% url 'add-comment' spot.id %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input class="btn btn-outline-dark my-2" type="submit" value="Share!">
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="container">
+            <div class="row my-2">
+                <div class="col-md-12"><br>
+                    <h3>No one has shared an opinion about this spot yet. You can be the first!</h3>
+                    <form class="my-2" method="post" action="{% url 'add-comment' spot.id %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input class="btn btn-outline-dark my-2" type="submit" value="Share!">
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
 
 {% endblock %}
