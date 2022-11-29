@@ -1,10 +1,10 @@
 {% extends 'home.html' %}
 {% block content %}
-    <div class="container">
+    <div class="container" style="margin-left: 25px">
         <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
     </div>
 
-    <div class="container">
+    <div class="container m-4">
         <div class="card my-4" style="width: 32rem;">
             <div class="card-body">
                 <h2 class="card-title my-2">{{ spot.name }} </h2>
@@ -38,17 +38,18 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container m-4">
         <div class="col-m-9">
             <div class="row my-2">
-                <h3>Photo galery:<span style="margin-left: 25px;"><a class="btn btn-outline-dark my-2" href="{% url 'add-photo' spot.id %}">Post photo from there!</a></span>
-                </h3>
+                <h3>Photo galery:</h3>
                 {% for photo in photos %}
                     <div class="card m-2" style="width: 18rem;">
                         <img class="rounded" style="margin: 15px; height: 223px; width: 233px; object-fit: cover;"
                              src="{{ photo.image.url }}" alt="{{ photo }}">
                         <div class="card-body">
-                            <p class="card-text"><a href="{% url 'profile' photo.user_id %}" class="text-dark text-decoration-none">@{{ photo.user.username }}</a></p>
+                            <p class="card-text"><a href="{% url 'profile' photo.user_id %}"
+                                                    class="text-dark text-decoration-none">@{{ photo.user.username }}</a>
+                            </p>
                             <p class="card-text">{{ photo.date }}</p>
                         </div>
                     </div>
@@ -58,5 +59,44 @@
             </div>
         </div>
     </div>
+    <div class="container m-4">
+        <div class="row my-2">
+            <div class="col-m-9">
+                <h3>Post your photos from there!</h3>
+                <form method="post" action="{% url 'add-photo' spot.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input class="my-2" type="file" name="image" id="image"><br>
+                    {{ photo_form.as_p }}
+                    <input class="btn btn-outline-dark my-2" type="submit" value="Post!">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container m-4">
+        <div class="row my-2">
+            <div class="col-m-9">
+                <h1>What surfers think about that spot:</h1>
+                <ul class="list-group">
+                    {% for comment in comments %}
+                        <li class="list-group-item my-2">
+                            <b>@{{ comment.user }}:</b> {{ comment.text }}<br>{{ comment.date }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <br>
+                <h3>You can also share your opinion!</h3><br>
+                <form class="my-2" method="post" action="{% url 'add-comment' spot.id %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="btn btn-outline-dark my-2" type="submit" value="Share!">
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}

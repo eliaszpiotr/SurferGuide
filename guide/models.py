@@ -120,13 +120,13 @@ class Photo(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.surfspot.name} image{{self.id}}'
+        return f'{self.surfspot.name} image{self.id}'
 
 
 class Comment(models.Model):
     surfspot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    text = models.TextField()
+    text = models.CharField(max_length=128)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

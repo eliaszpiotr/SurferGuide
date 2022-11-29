@@ -1,16 +1,13 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import SurfSpot, Photo, UserInformation
+from .models import SurfSpot, Photo, Comment
 
 
 class SurfSpotForm(forms.ModelForm):
     class Meta:
         model = SurfSpot
         fields = "__all__"
-
-
-
 
 
 class LoginForm(forms.Form):
@@ -37,5 +34,16 @@ class AddPhotoForm(forms.Form):
         model = Photo
         fields = ['image']
 
+        widgets = {
+            'image': forms.FileInput(attrs={'multiple': False}),
+        }
 
 
+class CommentAddForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+
+        widgets = {
+            'text': forms.Textarea(attrs={'rows': 2, 'cols': 40}),
+        }

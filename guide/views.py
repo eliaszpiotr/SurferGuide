@@ -4,8 +4,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
-from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm
-from guide.models import SurfSpot, Photo, UserInformation
+from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm, CommentAddForm
+from guide.models import SurfSpot, Photo, UserInformation, Comment
 
 
 # Create your views here.
@@ -16,7 +16,8 @@ class HomeView(View):
     def get(self, request):
         last_added_spots = SurfSpot.objects.all().order_by('-id')[:3]
         last_added_photos = Photo.objects.all().order_by('-id')[:4]
-        return render(request, 'home.html', {'last_added_spots': last_added_spots, 'last_added_photos': last_added_photos})
+        return render(request, 'home.html',
+                      {'last_added_spots': last_added_spots, 'last_added_photos': last_added_photos})
 
 
 class SpotListView(View):
@@ -46,8 +47,18 @@ class SpotView(View):
         spot = SurfSpot.objects.get(id=pk)
         photos = Photo.objects.filter(surfspot=spot)
         users = User.objects.all()
-
-        return render(request, 'spot.html', {'spot': spot, 'photos': photos, 'users': users})
+        comments = Comment.objects.filter(surfspot=spot)
+        form = CommentAddForm()
+        photo_form = AddPhotoForm()
+        context = {
+            'spot': spot,
+            'photos': photos,
+            'users': users,
+            'comments': comments,
+            'form': form,
+            'photo_form': photo_form,
+        }
+        return render(request, 'spot.html', context)
 
 
 class AddSpotView(LoginRequiredMixin, View):
@@ -115,7 +126,6 @@ class RegisterView(View):
 class AddPhotoView(LoginRequiredMixin, CreateView):
     model = Photo
     fields = ['image']
-    template_name = 'add_photo.html'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -123,6 +133,9 @@ class AddPhotoView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        return f'/spot/{self.kwargs["pk"]}/'
+
+    def get_template_names(self):
         return f'/spot/{self.kwargs["pk"]}/'
 
 
@@ -134,11 +147,11 @@ class ProfileView(LoginRequiredMixin, View):
         photos = Photo.objects.filter(user=user).order_by('-id')[:4]
         visited_spots = UserInformation.objects.get(user=user).visited_spots.all()
 
-        return render(request, f'profile.html', {'photos': photos, 'info': info, 'visited_spots': visited_spots, 'user': user})
+        return render(request, f'profile.html',
+                      {'photos': photos, 'info': info, 'visited_spots': visited_spots, 'user': user})
 
 
 class ProfileSettingsView(LoginRequiredMixin, UpdateView):
-    pass
     model = UserInformation
     fields = ['country', 'continent', 'bio', 'home_spot', 'skill_level', 'board', 'achievements', 'visited_spots']
     template_name = 'profile_settings.html'
@@ -147,3 +160,21 @@ class ProfileSettingsView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         user_id = self.request.user.id
         return UserInformation.objects.get(user_id=user_id)
+
+
+class AddCommentView(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = ['text']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.surfspot = SurfSpot.objects.get(id=self.kwargs['pk'])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return f'/spot/{self.kwargs["pk"]}/'
+
+    def get_template_names(self):
+        return f'/spot/{self.kwargs["pk"]}/'
+
+

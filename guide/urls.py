@@ -14,5 +14,6 @@ urlpatterns = [
     path('add_photo/<int:pk>/', views.AddPhotoView.as_view(), name='add-photo'),
     path('profile/<int:pk>/', views.ProfileView.as_view(), name='profile'),
     path('profile_settings/<int:pk>/', views.ProfileSettingsView.as_view(), name='profile-settings'),
+    path('add_comment/<int:pk>/', views.AddCommentView.as_view(), name='add-comment'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
