@@ -1,9 +1,10 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
-from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm, UserInfoForm
+from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm
 from guide.models import SurfSpot, Photo, UserInformation
 
 
@@ -133,61 +134,14 @@ class ProfileView(LoginRequiredMixin, View):
         return render(request, 'profile.html', {'info': info})
 
 
-class ProfileSettingsView(LoginRequiredMixin, View):
+class ProfileSettingsView(LoginRequiredMixin, UpdateView):
+    model = UserInformation
+    fields = ['avatar', 'bio', 'home_spot', 'skill_level', 'board', 'achievements', 'visited_spots']
+    template_name = 'profile_settings.html'
+    success_url = '/profile'
 
-        def get(self, request):
-            user = request.user
-            user_id = request.user.id
-            info = UserInformation.objects.get(user_id=user_id)
-            form = UserInfoForm()
-            return render(request, 'profile_settings.html', {'form': form, 'info': info})
-
-        def post(self, request):
-            user = request.user
-            user_id = request.user.id
-            info = UserInformation.objects.get(user_id=user_id)
-            form = UserInfoForm(request.POST, request.FILES)
-            if form.is_valid():
-                if form.cleaned_data['avatar'] is not None:
-                    info.avatar = form.cleaned_data['avatar']
-                if form.cleaned_data['bio'] is not '':
-                    info.bio = form.cleaned_data['bio']
-                if form.cleaned_data['home_spot'] is not None:
-                    info.home_spot = form.cleaned_data['home_spot']
-                if form.cleaned_data['skill_level'] is not 'Beginner':
-                    info.skill_level = form.cleaned_data['skill_level']
-                else:
-                    info.skill_level = 'Beginner'
-                if form.cleaned_data['board'] is not '':
-                    info.board = form.cleaned_data['board']
-                if form.cleaned_data['achievements'] is not '':
-                    info.achievements = form.cleaned_data['achievements']
-                # info.visited_spots = form.cleaned_data['visited_spots']
-                info.save()
-                return redirect('profile')
-            return render(request, 'profile_settings.html', {'form': form})
+    def get_object(self, queryset=None):
+        user_id = self.request.user.id
+        return UserInformation.objects.get(user_id=user_id)
 
 
-
-
-# class ProfileSettingsView(LoginRequiredMixin, View):
-#
-#     def get(self, request):
-#         form = UserInfoForm()
-#         return render(request, 'profile_settings.html', {'form': form})
-#
-#     def post(self, request):
-#         form = UserInfoForm(request.POST)
-#         if form.is_valid():
-#             user = request.user
-#             info = UserInformation.objects.get(user=user)
-#             info.avatar = form.cleaned_data['avatar']
-#             info.bio = form.cleaned_data['bio']
-#             info.home_spot = form.cleaned_data['home_spot']
-#             info.skill_level = form.cleaned_data['skill_level']
-#             info.board = form.cleaned_data['board']
-#             info.achievements = form.cleaned_data['achievements']
-#             # info.visited_spots = form.cleaned_data['visited_spots']
-#             info.save()
-#             return redirect('profile')
-#         return redirect('profile-settings')
