@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import SurfSpot, Danger
+from .models import SurfSpot, Photo, UserInformation
 
 
 class SurfSpotForm(forms.ModelForm):
@@ -37,6 +37,12 @@ class RegisterForm(forms.Form):
 
 class AddPhotoForm(forms.Form):
     class Meta:
-        model = SurfSpot
+        model = Photo
         fields = ['image']
+
+
+class UserInfoForm(forms.Form):
+    class Meta:
+        model = UserInformation
+        fields = "__all__"
 

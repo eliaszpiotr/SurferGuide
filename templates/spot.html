@@ -3,6 +3,7 @@
     <div class="container">
         <a href="{% url 'spot-list' %}" class="btn btn-dark" style="margin-top: 15px;">Back</a>
     </div>
+
     <div class="container">
         <div class="card my-4" style="width: 32rem;">
             <div class="card-body">
@@ -15,7 +16,6 @@
                     Swell: {{ spot.get_swell_size_display }}<br>
                     Waves: {{ spot.get_wave_type_display }}, {{ spot.get_wave_direction_display }}
                     direction<br>
-
                 </p>
                 <p class="card-text">
                     <span class="text-decoration-underline">Additional information:</span><br>

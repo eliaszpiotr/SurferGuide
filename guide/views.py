@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm
-from guide.models import SurfSpot, Photo
+from guide.models import SurfSpot, Photo, UserInformation
 
 
 # Create your views here.
@@ -120,3 +120,11 @@ class AddPhotoView(LoginRequiredMixin, View):
         user = request.user
         Photo.objects.create(image=image, surfspot=spot, user=user)
         return redirect('spot', pk=pk)
+
+
+class ProfileView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        user_id = request.user.id
+        info = UserInformation.objects.get(user_id=user_id)
+        return render(request, 'profile.html', {'info': info})

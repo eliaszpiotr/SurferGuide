@@ -1,0 +1,54 @@
+{% extends 'home.html' %}
+{% block content %}
+    <div class="container">
+        <a href="{% url 'spot-list' %}" class="btn btn-dark" style="margin-top: 15px;">Back</a>
+    </div>
+    <div class="container my-4">
+        <div>
+            <span style="font-weight: bold; font-size: 25px">@{{ user.username }}</span><br>
+            {{ info.bio }}<br>
+            <br><span style="font-weight: bold; font-size: 15px;">{{ info.get_skill_level_display }} surfer</span>
+
+        </div>
+        <br>
+        {% if info %}
+            <div class="card">
+                {% if info.avatar %}
+                    <img class="rounded m-4" style="margin: 15px; height: 250px; width: 250px; object-fit: cover;"
+                         src=""
+                         alt="{{ user.username }}'s profile picture">
+                {% endif %}
+                <div class="card-body">
+                {% if info.home_spot %}
+                    <p class="card-text">
+                        Home spot: <a class="text-dark"
+                                      href="{% url 'spot' info.home_spot.id %}">{{ info.home_spot }}</a>
+                    </p>
+                {% endif %}
+                {% if info.visited_spots %}
+                    <p class="card-text">
+                        Visited spots:<br>
+                        {% for spot in info.visited_spots.name %}
+                            {{ spot }}<br>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                {% if info.board %}
+                    <p class="card-text">
+                        Board: {{ info.board }}
+                    </p>
+                {% endif %}
+                {% if info.achievements %}
+                    <p class="card-text">
+                        Achievements:<br>
+                        {% for achievement in info.achievements %}
+                            {{ achievement }}<br>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
