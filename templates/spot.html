@@ -80,7 +80,7 @@
                 <ul class="list-group">
                     {% for comment in comments %}
                         <li class="list-group-item my-2">
-                            <b>@{{ comment.user }}:</b> {{ comment.text }}<br>{{ comment.date }}</li>
+                            <b><a class="text-decoration-none text-dark" href="{% url 'profile' comment.user.id %}">@{{ comment.user }}:</a></b> {{ comment.text }}<br>{{ comment.date }}</li>
                     {% endfor %}
                 </ul>
             </div>
