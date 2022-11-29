@@ -47,25 +47,6 @@
 
 {% block content %}
     <div class="container m-4">
-        <div class="row ">
-            <div class="col-12">
-                <h1>Last added surfing spots</h1>
-                {% for spot in last_added_spots %}
-                    <div class="card my-3">
-                        <div class="card-header">
-                            <h3>{{ spot.name }}</h3>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ spot.location }}, {{ spot.get_continent_display }}</h5>
-                            <p class="card-text">{{ spot.description }}</p>
-                            <a href="{{ spot.get_absolute_url }}" class="text-danger text-decoration-none">Check!</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    <div class="container">
         <div class="col">
             <div class="row my-2">
                 <h3>Latest photos:</h3>
@@ -78,6 +59,25 @@
                                                     class="text-dark text-decoration-none">@{{ photo.user.username }}</a>
                             </p>
                             <p class="card-text">{{ photo.date }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="container m-4">
+        <div class="row ">
+            <div class="col-12">
+                <h1>Last added surfing spots</h1>
+                {% for spot in last_added_spots %}
+                    <div class="card my-3">
+                        <div class="card-header">
+                            <h3>{{ spot.name }}</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ spot.location }}, {{ spot.get_continent_display }}</h5>
+                            <p class="card-text">{{ spot.description }}</p>
+                            <a href="{{ spot.get_absolute_url }}" class="text-danger text-decoration-none">Check!</a>
                         </div>
                     </div>
                 {% endfor %}
