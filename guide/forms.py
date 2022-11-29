@@ -7,7 +7,35 @@ from .models import SurfSpot, Photo, Comment
 class SurfSpotForm(forms.ModelForm):
     class Meta:
         model = SurfSpot
-        fields = "__all__"
+        fields = '__all__'
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Surf Spot Name'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
+            'continent': forms.Select(attrs={'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Lisbon'}),
+            'country': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Portugal'}),
+            'best_season': forms.Select(attrs={'class': 'form-control'}),
+            'difficulty': forms.Select(attrs={'class': 'form-control'}),
+            'best_wind': forms.Select(attrs={'class': 'form-control'}),
+            'wave_direction': forms.Select(attrs={'class': 'form-control'}),
+            'spot_type': forms.Select(attrs={'class': 'form-control'}),
+            'wave_type': forms.Select(attrs={'class': 'form-control'}),
+            'swell_size': forms.Select(attrs={'class': 'form-control'}),
+            'crowd': forms.Select(attrs={'class': 'form-control'}),
+            'danger': forms.CheckboxSelectMultiple(),
+        }
+
+        labels = {
+            'name': 'Name of the surf spot',
+            'description': 'Description',
+            'continent': 'Continent',
+            'country': 'Country',
+            'location': 'City',
+            'best_season': 'Best season for surfing',
+            'difficulty': 'Entry surfing level',
+            'danger': 'Dangers on the spot',
+        }
 
 
 class LoginForm(forms.Form):
@@ -35,7 +63,7 @@ class AddPhotoForm(forms.Form):
         fields = ['image']
 
         widgets = {
-            'image': forms.FileInput(attrs={'multiple': False}),
+            'image': forms.FileInput(attrs={'multiple': False, 'class': 'form-control-file'}),
         }
 
 
@@ -45,5 +73,9 @@ class CommentAddForm(forms.ModelForm):
         fields = ['text']
 
         widgets = {
-            'text': forms.Textarea(attrs={'rows': 2, 'cols': 40}),
+            'text': forms.Textarea(attrs={'placeholder': 'Write your comment here...', 'rows': 3, 'class': 'form-control'}),
+        }
+
+        labels = {
+            'text': '',
         }

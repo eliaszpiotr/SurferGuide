@@ -66,7 +66,7 @@
         <div class="container">
             <div class="col-m-9">
                 <div class="row my-2">
-                    <h3>Photo galery:</h3>
+                    <h3>Photo galery</h3>
                     {% for photo in photos %}
                         <div class="card m-2" style="width: 18rem;">
                             <img class="rounded m-3"
@@ -91,10 +91,10 @@
         <div class="container my-4">
             <div class="row my-2">
                 <div class="col-m-9">
-                    <h3>Post your photos from there!</h3>
+                    <h3>Post your photos from this spot!</h3>
                     <form method="post" action="{% url 'add-photo' spot.id %}" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <input class="my-2" type="file" name="image" id="image"><br>
+                        <input class="my-2 form-control-file" type="file" name="image" id="image"><br>
                         {{ photo_form.as_p }}
                         <input class="btn btn-outline-dark my-2" type="submit" value="Post!">
                     </form>
@@ -106,7 +106,7 @@
             <div class="row my-2">
                 <div class="col-m-9">
                     <h3>Be the first person to share a photo from this spot!</h3>
-                    <form method="post" action="{% url 'add-photo' spot.id %}" enctype="multipart/form-data">
+                    <form method="post"  action="{% url 'add-photo' spot.id %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input class="my-2" type="file" name="image" id="image"><br>
                         {{ photo_form.as_p }}
@@ -120,8 +120,8 @@
         <div class="container">
             <div class="row my-2">
                 <div class="col-m-9">
-                    <h1>What surfers think about that spot:</h1>
-                    <ul class="list-group">
+                    <h1>What surfers think about that spot</h1>
+                    <ul class="list-group" style="width: 40rem;">
                         {% for comment in comments %}
                             <li class="list-group-item my-2">
                                 <b><a class="text-decoration-none text-dark" href="{% url 'profile' comment.user.id %}">@{{ comment.user }}:</a></b> {{ comment.text }}<br>{{ comment.date }}
@@ -133,8 +133,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <br>
-                    <h3>You can share your opinion about this spot!</h3><br>
-                    <form class="my-2" method="post" action="{% url 'add-comment' spot.id %}">
+                    <h3>You can also share your opinion about this spot!</h3><br>
+                    <form class="my-2" style="width: 40rem;" method="post" action="{% url 'add-comment' spot.id %}">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input class="btn btn-outline-dark my-2" type="submit" value="Share!">
@@ -147,7 +147,7 @@
             <div class="row my-2">
                 <div class="col-md-12"><br>
                     <h3>No one has shared an opinion about this spot yet. You can be the first!</h3>
-                    <form class="my-2" method="post" action="{% url 'add-comment' spot.id %}">
+                    <form class="my-2" style="width: 54rem;" method="post" action="{% url 'add-comment' spot.id %}">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input class="btn btn-outline-dark my-2" type="submit" value="Share!">
