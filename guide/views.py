@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm
-from guide.models import SurfSpot
+from guide.models import SurfSpot, Photo
 
 
 # Create your views here.
@@ -42,8 +42,10 @@ class SpotView(View):
 
     def get(self, request, pk):
         spot = SurfSpot.objects.get(id=pk)
+        photos = Photo.objects.filter(surfspot=spot)
         form = AddPhotoForm()
-        return render(request, 'spot.html', {'spot': spot, 'form': form})
+        form_2 = AddPhotoForm()
+        return render(request, 'spot.html', {'spot': spot, 'form': form, 'photos': photos, 'form_2': form_2})
 
 
 class AddSpotView(LoginRequiredMixin, View):
@@ -106,15 +108,15 @@ class RegisterView(View):
         return render(request, 'form.html', {'form': form})
 
 
-class AddPhoto(LoginRequiredMixin, View):
+class AddPhotoView(LoginRequiredMixin, View):
+
+    def get(self, request, pk):
+        form = AddPhotoForm()
+        return render(request, 'add_photo.html', {'form': form})
 
     def post(self, request, pk):
-        form = AddPhotoForm(request.POST)
+        image = request.FILES.get('image')
         spot = SurfSpot.objects.get(id=pk)
-        if form.is_valid():
-            photo = form.save(commit=False)
-            photo.movie = spot
-            photo.author = request.user
-            photo.save()
-            return redirect('spot', spot.id)
-
+        user = request.user
+        Photo.objects.create(image=image, surfspot=spot, user=user)
+        return redirect('spot', pk=pk)

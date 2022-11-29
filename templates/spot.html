@@ -14,7 +14,7 @@
                     Best wind direction: {{ spot.get_best_wind_display }}<br>
                     Swell: {{ spot.get_swell_size_display }}<br>
                     Waves: {{ spot.get_wave_type_display }}, {{ spot.get_wave_direction_display }}
-                    direction, {{ spot.get_wave_type_display }}<br>
+                    direction<br>
 
                 </p>
                 <p class="card-text">
@@ -38,24 +38,31 @@
     </div>
 
     <div class="container">
-        <h3>Photo galery:</h3>
-        {% for photo in spot.photo_set.all %}
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="{{ photo.image.url }}" alt="Card image cap">
-                <div class="card-body">
-                    <p class="card-text">{{ user.name }}</p>
-                </div>
+        <div class="col-m-9">
+            <div class="row m-2">
+                <h3>Photo galery:</h3>
+                {% for photo in photos %}
+
+                    <div class="card m-2" style="width: 18rem;">
+                        <img class="rounded" style="margin: 15px; height: 223px; width: 233px; object-fit: cover;"
+                             src="{{ photo }}" alt="{{ photo }}">
+                        <div class="card-body">
+                            <p class="card-text">@{{ user.username }}</p>
+                            <p class="card-text">{{ photo.date }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <h4>No photos in galery :((</h4>
+                {% endfor %}
             </div>
-        {% empty %}
-            <h4>No photos in galery :((</h4>
-        {% endfor %}
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <br><h5>Add Image:</h5>
                 <form method="post" action="{% url 'add-photo' spot.id %}">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <input class="btn btn-outline-dark my-2" type="submit">
+                    {{ form_2.as_p }}
+                    <input class="btn btn-outline-dark my-2" type="submit" value="Post photo!">
                 </form>
             </div>
         </div>

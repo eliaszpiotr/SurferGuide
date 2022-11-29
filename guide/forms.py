@@ -39,3 +39,4 @@ class AddPhotoForm(forms.Form):
     class Meta:
         model = SurfSpot
         fields = ['image']
+

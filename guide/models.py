@@ -74,7 +74,7 @@ class SurfSpot(models.Model):
         MASSIVE = 5, '12+ ft.'
         SUPERMASSIVE = 6, '20+ ft.'
 
-    swell_size = models.IntegerField(choices=WaveHeight.choices )
+    swell_size = models.IntegerField(choices=WaveHeight.choices)
 
     # additional info
 
@@ -112,11 +112,52 @@ class SurfSpot(models.Model):
         return reverse('spot', kwargs={'pk': self.pk})
 
 
-class PhotoGallery(models.Model):
+class Photo(models.Model):
     surfspot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/', blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.surfspot.name} image'
+        return f'{self.surfspot.name} image{{self.id}}'
+
+
+class Comment(models.Model):
+    surfspot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    text = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.surfspot.name} comment'
+
+
+class UserInformation(models.Model):
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='images/', blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    home_spot = models.ForeignKey(SurfSpot, on_delete=models.SET_NULL, blank=True, null=True)
+    board = models.CharField(max_length=64, blank=True, null=True)
+
+    class SkillLevel(models.IntegerChoices):
+        BEGINNER = 1
+        INTERMEDIATE = 2
+        ADVANCED = 3
+        PRO = 4
+
+    skill_level = models.IntegerField(choices=SkillLevel.choices, blank=True, null=True)
+    achievements = models.TextField(blank=True, null=True)
+    visited_spots = models.ManyToManyField(SurfSpot, blank=True, null=True, related_name='visited_spots')
+
+    # FUTURE FEATURES
+    # friends = models.ManyToManyField('auth.User', blank=True, null=True)
+
+    # class RankOnSite(models.IntegerChoices):
+    #     KOOK = 1
+    #     LOCAL_GUIDE = 3
+    #     LEGENDARY_SURFER = 4
+    #
+    # rank = models.IntegerField(choices=RankOnSite.choices, blank=True, null=True, default=1)
+
+    def __str__(self):
+        return f'{self.user.username} information'
