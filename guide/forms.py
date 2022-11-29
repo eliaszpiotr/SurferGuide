@@ -10,10 +10,7 @@ class SurfSpotForm(forms.ModelForm):
         fields = "__all__"
 
 
-# class DangerForm(forms.ModelForm):
-#     class Meta:
-#         model = Danger
-#         fields = "__all__"
+
 
 
 class LoginForm(forms.Form):

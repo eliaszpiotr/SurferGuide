@@ -39,13 +39,13 @@
 
     <div class="container">
         <div class="col-m-9">
-            <div class="row m-2">
-                <h3>Photo galery:</h3>
+            <div class="row my-2">
+                <h3>Photo galery:<br><span><a class="btn btn-outline-dark my-2" href="{% url 'add-photo' spot.id %}">Post Photo!</a></span>
+                </h3>
                 {% for photo in photos %}
-
                     <div class="card m-2" style="width: 18rem;">
                         <img class="rounded" style="margin: 15px; height: 223px; width: 233px; object-fit: cover;"
-                             src="{{ photo }}" alt="{{ photo }}">
+                             src="{{ photo.image.url }}" alt="{{ photo }}">
                         <div class="card-body">
                             <p class="card-text">@{{ user.username }}</p>
                             <p class="card-text">{{ photo.date }}</p>
@@ -54,16 +54,6 @@
                 {% empty %}
                     <h4>No photos in galery :((</h4>
                 {% endfor %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <br><h5>Add Image:</h5>
-                <form method="post" action="{% url 'add-photo' spot.id %}">
-                    {% csrf_token %}
-                    {{ form_2.as_p }}
-                    <input class="btn btn-outline-dark my-2" type="submit" value="Post photo!">
-                </form>
             </div>
         </div>
     </div>

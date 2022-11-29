@@ -68,7 +68,7 @@ class LoginView(View):
     def get(self, request):
         form = LoginForm()
         register = 'Don\'t have an account? Register here!'
-        return render(request, 'form.html', {'form': form, 'register': register})
+        return render(request, 'login.html', {'form': form, 'register': register})
 
     def post(self, request):
         form = LoginForm(request.POST)
@@ -81,7 +81,7 @@ class LoginView(View):
                 login(request, user)
                 return redirect('profile')
             message = 'Invalid username or password!'
-        return render(request, 'form.html', {'form': form, 'message': message})
+        return render(request, 'login.html', {'form': form, 'message': message})
 
 
 class LogoutView(View):
@@ -93,7 +93,7 @@ class LogoutView(View):
 class RegisterView(View):
     def get(self, request):
         form = RegisterForm()
-        return render(request, 'form.html', {'form': form})
+        return render(request, 'login.html', {'form': form})
 
     def post(self, request):
         form = RegisterForm(request.POST)
@@ -108,27 +108,26 @@ class RegisterView(View):
             if user is not None:
                 login(request, user)
                 return redirect('profile')
-        return render(request, 'form.html', {'form': form})
+        return render(request, 'login.html', {'form': form})
 
 
-class AddPhotoView(LoginRequiredMixin, View):
+class AddPhotoView(LoginRequiredMixin, CreateView):
+    model = Photo
+    fields = ['image']
+    template_name = 'add_photo.html'
 
-    def get(self, request, pk):
-        form = AddPhotoForm()
-        return render(request, 'add_photo.html', {'form': form})
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.surfspot = SurfSpot.objects.get(id=self.kwargs['pk'])
+        return super().form_valid(form)
 
-    def post(self, request, pk):
-        image = request.FILES.get('image')
-        spot = SurfSpot.objects.get(id=pk)
-        user = request.user
-        Photo.objects.create(image=image, surfspot=spot, user=user)
-        return redirect('spot', pk=pk)
+    def get_success_url(self):
+        return f'/spot/{self.kwargs["pk"]}/'
 
 
 class ProfileView(LoginRequiredMixin, View):
 
     def get(self, request):
-        user = request.user
         user_id = request.user.id
         info = UserInformation.objects.get(user_id=user_id)
         return render(request, 'profile.html', {'info': info})
@@ -143,5 +142,3 @@ class ProfileSettingsView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         user_id = self.request.user.id
         return UserInformation.objects.get(user_id=user_id)
-
-
