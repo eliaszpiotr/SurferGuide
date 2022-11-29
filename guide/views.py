@@ -130,12 +130,11 @@ class ProfileView(LoginRequiredMixin, View):
 
     def get(self, request, pk):
         user = User.objects.get(id=pk)
-        user_id = request.user.id
-        info = UserInformation.objects.get(user_id=user_id)
-        photos = Photo.objects.filter(user_id=user_id)
-        visited_spots = UserInformation.objects.get(user_id=user_id).visited_spots.all()
+        info = UserInformation.objects.get(user=user)
+        photos = Photo.objects.filter(user=user)
+        visited_spots = UserInformation.objects.get(user=user).visited_spots.all()
 
-        return render(request, f'profile.html', {'photos': photos, 'info': info, 'visited_spots': visited_spots})
+        return render(request, f'profile.html', {'photos': photos, 'info': info, 'visited_spots': visited_spots, 'user': user})
 
 
 class ProfileSettingsView(LoginRequiredMixin, UpdateView):
