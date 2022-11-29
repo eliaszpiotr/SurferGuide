@@ -15,7 +15,7 @@ class HomeView(View):
 
     def get(self, request):
         last_added_spots = SurfSpot.objects.all().order_by('-id')[:3]
-        last_added_photos = Photo.objects.all().order_by('-id')[:3]
+        last_added_photos = Photo.objects.all().order_by('-id')[:4]
         return render(request, 'home.html', {'last_added_spots': last_added_spots, 'last_added_photos': last_added_photos})
 
 
@@ -131,7 +131,7 @@ class ProfileView(LoginRequiredMixin, View):
     def get(self, request, pk):
         user = User.objects.get(id=pk)
         info = UserInformation.objects.get(user=user)
-        photos = Photo.objects.filter(user=user)
+        photos = Photo.objects.filter(user=user).order_by('-id')[:4]
         visited_spots = UserInformation.objects.get(user=user).visited_spots.all()
 
         return render(request, f'profile.html', {'photos': photos, 'info': info, 'visited_spots': visited_spots, 'user': user})
