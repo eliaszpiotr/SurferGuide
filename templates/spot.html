@@ -29,8 +29,9 @@
                         {{ danger.name }}<br>
                     {% endfor %}
                 </p>
-                <p class="card-text"><span
-                        class="text-decoration-underline">Description:</span><br> {{ spot.description }}</p>
+                <div class="card-text" style="overflow: auto; max-height: 150px;"><span
+                        class="text-decoration-underline">Description:</span><br>{{ spot.description }}
+                </div>
             </div>
 
 
@@ -40,7 +41,7 @@
     <div class="container">
         <div class="col-m-9">
             <div class="row my-2">
-                <h3>Photo galery:<span style="margin-left: 25px;"><a class="btn btn-outline-dark my-2" href="{% url 'add-photo' spot.id %}">Post Photo!</a></span>
+                <h3>Photo galery:<span style="margin-left: 25px;"><a class="btn btn-outline-dark my-2" href="{% url 'add-photo' spot.id %}">Post photo from there!</a></span>
                 </h3>
                 {% for photo in photos %}
                     <div class="card m-2" style="width: 18rem;">
