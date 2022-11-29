@@ -52,7 +52,7 @@
                 <h1>Latest photos</h1>
                 {% for photo in last_added_photos %}
                     <div class="card m-2" style="width: 18rem;">
-                        <img class="rounded" style="margin: 15px; height: 223px; width: 233px; object-fit: cover;"
+                        <img class="rounded m-2" style="margin-top: 15px; height: 223px; width: 233px; object-fit: cover;"
                              src="{{ photo.image.url }}" alt="{{ photo }}">
                         <div class="card-body">
                             <p class="card-text"><a href="{% url 'profile' photo.user_id %}"
