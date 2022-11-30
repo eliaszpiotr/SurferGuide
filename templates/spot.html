@@ -47,7 +47,7 @@
                                 <span class="text-danger"
                                       style="font-size: 20px; font-weight: bold">Dangers!</span><br>
                                 {% for danger in spot.danger.all %}
-                                    &nbsp{{ danger.name }}<br>
+                                    &nbsp<b>{{ danger.name }}</b><br>
                                 {% endfor %}
                             </p>
                         </td>
@@ -59,7 +59,7 @@
                     <span style="font-size: 20px; font-weight: bold">Description:</span><br>{{ spot.description }}
                 </div>
                 <div class="card-text" style="margin-top: 20px;">
-                    <span style="font-size: 20px; font-weight: bold">Map:</span><br>
+                    <span style="font-size: 20px; font-weight: bold">Location:</span><br>
                 </div>
                 <div class="rounded m-4" style="max-height: 500px; margin-top: 30px; overflow: hidden">
                     {{ map|safe }}
@@ -131,7 +131,7 @@
                     <h1>What surfers think about that spot</h1>
                     <ul class="list-group" style="width: 40rem;">
                         {% for comment in comments %}
-                            <li class="list-group-item my-2">
+                            <li class="list-group-item my-2 rounded">
                                 <b><a class="text-decoration-none text-dark" href="{% url 'profile' comment.user.id %}">@{{ comment.user }}:</a></b> {{ comment.text }}<br>{{ comment.date }}
                             </li>
                         {% endfor %}

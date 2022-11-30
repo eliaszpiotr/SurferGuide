@@ -1,12 +1,12 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm, CommentAddForm, ProfileSettingsForm
 from guide.models import SurfSpot, Photo, UserInformation, Comment
-from guide.distance import get_map
+from guide.distance import get_map, get_map_many_locations
 
 
 # Create your views here.
@@ -18,7 +18,20 @@ class HomeView(View):
         last_added_spots = SurfSpot.objects.all().order_by('-id')[:3]
         last_added_photos = Photo.objects.all().order_by('-id')[:4]
         logged_user = request.user
-        return render(request, 'home.html', {'last_added_spots': last_added_spots, 'last_added_photos': last_added_photos, 'logged_user': logged_user})
+        spots = SurfSpot.objects.all()
+        locations = []
+        for spot in spots:
+            locations.append(spot.location)
+        map = get_map_many_locations(locations)
+
+        context = {
+            'last_added_spots': last_added_spots,
+            'last_added_photos': last_added_photos,
+            'logged_user': logged_user,
+            'map': map,
+
+        }
+        return render(request, 'home.html', context)
 
 
 class SpotListView(View):
@@ -156,12 +169,28 @@ class ProfileView(View):
         info = UserInformation.objects.get(user=user)
         photos = Photo.objects.filter(user=user).order_by('-id')[:4]
         visited_spots = UserInformation.objects.get(user=user).visited_spots.all()
-
-        return render(request, f'profile.html', {'photos': photos, 'info': info, 'visited_spots': visited_spots, 'user': user, 'logged_user': logged_user})
+        visited_locations = []
+        for spot in visited_spots:
+            visited_locations.append(spot.location)
+        if info.home_spot:
+            map2= get_map(info.home_spot.location)
+        map = get_map_many_locations(visited_locations)
+        context = {
+            'photos': photos,
+            'info': info,
+            'visited_spots': visited_spots,
+            'user': user,
+            'logged_user': logged_user,
+            'map': map,
+            'map2': map2,
+            'visited_locations': visited_locations,
+        }
+        return render(request, f'profile.html', context)
 
 
 class ProfileSettingsView(LoginRequiredMixin, UpdateView):
     model = UserInformation
+    user = User
     template_name = 'profile_settings.html'
     form_class = ProfileSettingsForm
 
@@ -191,5 +220,3 @@ class AddCommentView(LoginRequiredMixin, CreateView):
 
     def get_template_names(self):
         return f'/spot/{self.kwargs["pk"]}/'
-
-

@@ -106,14 +106,11 @@ class SurfSpot(models.Model):
 
     danger = models.ManyToManyField(Danger, blank=True, null=True)
 
-
-
     def __str__(self):
         return f'{self.name}, {self.continent}'
 
     def get_absolute_url(self):
         return reverse('spot', kwargs={'pk': self.pk})
-
 
 
 class Photo(models.Model):
