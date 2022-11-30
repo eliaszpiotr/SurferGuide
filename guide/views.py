@@ -54,6 +54,7 @@ class SpotView(View):
         form = CommentAddForm()
         photo_form = AddPhotoForm()
         logged_user = request.user
+        map = get_map(spot.location)
         context = {
             'logged_user': logged_user,
             'spot': spot,
@@ -62,6 +63,7 @@ class SpotView(View):
             'comments': comments,
             'form': form,
             'photo_form': photo_form,
+            'map': map,
         }
         return render(request, 'spot.html', context)
 
@@ -75,12 +77,11 @@ class AddSpotView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = SurfSpotForm(request.POST)
-        location = form.data['location']
         if form.is_valid():
-            form.save()
-            get_map(location)
-            return redirect('spot-list')
-        return redirect('spot-list')
+            spot = form.save(commit=False)
+            spot.save()
+            return redirect('spot', pk=spot.pk)
+        return render(request, 'add-spot.html', {'form': form})
 
 
 class LoginView(View):

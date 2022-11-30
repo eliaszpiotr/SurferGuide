@@ -105,7 +105,8 @@ class SurfSpot(models.Model):
     difficulty = models.IntegerField(choices=Difficulty.choices)
 
     danger = models.ManyToManyField(Danger, blank=True, null=True)
-    map_url = models.URLField(blank=True, null=True)
+
+
 
     def __str__(self):
         return f'{self.name}, {self.continent}'

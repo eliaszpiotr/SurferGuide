@@ -24,6 +24,8 @@ class SurfSpotForm(forms.ModelForm):
             'swell_size': forms.Select(attrs={'class': 'form-control'}),
             'crowd': forms.Select(attrs={'class': 'form-control'}),
             'danger': forms.CheckboxSelectMultiple(),
+            'latitude': forms.NumberInput(attrs={'hidden': True}),
+            'longitude': forms.NumberInput(attrs={'hidden': True}),
         }
 
         labels = {
@@ -35,6 +37,9 @@ class SurfSpotForm(forms.ModelForm):
             'best_season': 'Best season for surfing',
             'difficulty': 'Entry surfing level',
             'danger': 'Dangers on the spot',
+            'latitude': '',
+            'longitude': '',
+
         }
 
 
@@ -92,7 +97,6 @@ class CommentAddForm(forms.ModelForm):
 
 
 class ProfileSettingsForm(forms.ModelForm):
-
     spots_queryset1 = SurfSpot.objects.order_by('continent')
     spots_queryset2 = SurfSpot.objects.order_by('continent')
 

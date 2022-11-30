@@ -1,4 +1,5 @@
 {% extends 'home.html' %}
+{% load static %}
 {% block content %}
     <div class="container">
         <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
@@ -8,7 +9,7 @@
         <div class="card my-4">
             <div class="card-body">
                 <h2 class="card-title my-2">{{ spot.name }} </h2>
-                <h6 class="card-subtitle mb-2 text-muted">{{ spot.location }}, {{ spot.get_continent_display }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{ spot.location }}, {{ spot.country }} <br>{{ spot.get_continent_display }}</h6>
                 <table class="table table">
                     <thead>
                     <tr>
@@ -57,11 +58,18 @@
                 <div class="card-text" style="overflow: auto; max-height: 150px;">
                     <span style="font-size: 20px; font-weight: bold">Description:</span><br>{{ spot.description }}
                 </div>
+                <div class="card-text" style="margin-top: 20px;">
+                    <span style="font-size: 20px; font-weight: bold">Map:</span><br>
+                </div>
+                <div class="rounded m-4" style="max-height: 500px; margin-top: 30px; overflow: hidden">
+                    {{ map|safe }}
+                </div>
+
             </div>
-
-
         </div>
     </div>
+
+
     {% if photos %}
         <div class="container">
             <div class="col-m-9">
@@ -106,7 +114,7 @@
             <div class="row my-2">
                 <div class="col-m-9">
                     <h3>Be the first person to share a photo from this spot!</h3>
-                    <form method="post"  action="{% url 'add-photo' spot.id %}" enctype="multipart/form-data">
+                    <form method="post" action="{% url 'add-photo' spot.id %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input class="my-2" type="file" name="image" id="image"><br>
                         {{ photo_form.as_p }}
