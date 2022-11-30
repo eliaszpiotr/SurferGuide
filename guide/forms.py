@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import SurfSpot, Photo, Comment
+from .models import SurfSpot, Photo, Comment, UserInformation
 
 
 class SurfSpotForm(forms.ModelForm):
@@ -39,14 +39,23 @@ class SurfSpotForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=128)
-    password = forms.CharField(max_length=128, widget=forms.PasswordInput)
+    username = forms.CharField(max_length=128,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+                               label='')
+    password = forms.CharField(max_length=128,
+                               widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+                               label='')
 
 
 class RegisterForm(forms.Form):
-    username = forms.CharField(max_length=128)
-    password = forms.CharField(max_length=128, widget=forms.PasswordInput, label="Password")
-    password2 = forms.CharField(max_length=128, widget=forms.PasswordInput, label="Repeat password")
+    username = forms.CharField(max_length=128,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+                               label='')
+    password = forms.CharField(max_length=128,
+                               widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+                               label="")
+    password2 = forms.CharField(max_length=128, widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Repeat password'}), label="")
 
     def clean(self):
         cleaned_data = super().clean()
@@ -73,9 +82,45 @@ class CommentAddForm(forms.ModelForm):
         fields = ['text']
 
         widgets = {
-            'text': forms.Textarea(attrs={'placeholder': 'Write your comment here...', 'rows': 3, 'class': 'form-control'}),
+            'text': forms.Textarea(
+                attrs={'placeholder': 'Write your comment here...', 'rows': 3, 'class': 'form-control'}),
         }
 
         labels = {
             'text': '',
+        }
+
+
+class ProfileSettingsForm(forms.ModelForm):
+
+    spots_queryset1 = SurfSpot.objects.order_by('continent')
+    spots_queryset2 = SurfSpot.objects.order_by('continent')
+
+    class Meta:
+        model = UserInformation
+        fields = ['country', 'continent', 'bio', 'home_spot', 'skill_level', 'board', 'achievements', 'visited_spots']
+
+        widgets = {
+            'country': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Portugal'}),
+            'continent': forms.Select(attrs={'class': 'form-control'}),
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Bio'}),
+            'home_spot': forms.Select(attrs={'class': 'form-control'}),
+            'skill_level': forms.Select(attrs={'class': 'form-control'}),
+            'board': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your surfing board'}),
+            'achievements': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Achievements'}),
+            'visited_spots': forms.SelectMultiple(attrs={'class': 'form-control', 'rows': 3}),
+        }
+
+        labels = {
+            'bio': 'Write a short bio about yourself',
+            'home_spot': 'Your home surf spot',
+            'skill_level': 'Your surfing skills level',
+            'board': 'Your surfing board',
+            'achievements': 'Your achievements in surfing tournaments',
+            'visited_spots': 'Spots you have visited',
+        }
+
+        ordering = {
+            'home_spot': 'continent',
+            'visited_spots': 'continent',
         }

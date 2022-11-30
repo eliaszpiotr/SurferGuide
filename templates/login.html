@@ -1,12 +1,16 @@
 {% extends 'home.html' %}
 {% block content %}
-    <div class="container">
+    <div class="container" style="width: 40rem;">
         <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
     </div>
-    <div class="container">
+    <div class="container" style="width: 40rem;">
         <div class="row">
             <div class="col-md-12" style="margin-top: 15px;">
-                <h1>Login:</h1>
+                {% if register %}
+                <h1>Login</h1>
+                {% else %}
+                <h1>Register</h1>
+                {% endif %}
 
             </div>
         </div>
@@ -20,7 +24,12 @@
                         <input class="btn btn-outline-dark my-2" type="submit" value="Submit">
                     </form>
                     <div>
-                        <br><h6><a href="{% url 'register' %}" style="color: black">{{ register }}</a></h6>
+                        {% if register %}
+                            <br><h6><a href="{% url 'register' %}" style="color: black">{{ register }}</a></h6>
+                        {% else %}
+
+                            <br><h6><a href="{% url 'login' %}" style="color: black">You already have an account? Login here!</a></h6>
+                        {% endif %}
                     </div>
                 </div>
             </div>

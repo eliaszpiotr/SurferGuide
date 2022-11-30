@@ -4,8 +4,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
-from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm, CommentAddForm
+from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm, CommentAddForm, ProfileSettingsForm
 from guide.models import SurfSpot, Photo, UserInformation, Comment
+from guide.distance import get_map
 
 
 # Create your views here.
@@ -29,6 +30,7 @@ class SpotListView(View):
         north_america = SurfSpot.objects.filter(continent='NA')
         south_america = SurfSpot.objects.filter(continent='SA')
         oceania = SurfSpot.objects.filter(continent='OC')
+        logged_user = request.user
 
         context = {
             'europe': europe,
@@ -37,6 +39,7 @@ class SpotListView(View):
             'north_america': north_america,
             'south_america': south_america,
             'oceania': oceania,
+            'logged_user': logged_user,
         }
         return render(request, 'spot_list.html', context)
 
@@ -50,7 +53,9 @@ class SpotView(View):
         comments = Comment.objects.filter(surfspot=spot)
         form = CommentAddForm()
         photo_form = AddPhotoForm()
+        logged_user = request.user
         context = {
+            'logged_user': logged_user,
             'spot': spot,
             'photos': photos,
             'users': users,
@@ -64,13 +69,16 @@ class SpotView(View):
 class AddSpotView(LoginRequiredMixin, View):
 
     def get(self, request):
+        logged_user = request.user
         form = SurfSpotForm()
-        return render(request, 'add_spot.html', {'form': form})
+        return render(request, 'add_spot.html', {'form': form, 'logged_user': logged_user})
 
     def post(self, request):
         form = SurfSpotForm(request.POST)
+        location = form.data['location']
         if form.is_valid():
             form.save()
+            get_map(location)
             return redirect('spot-list')
         return redirect('spot-list')
 
@@ -153,9 +161,15 @@ class ProfileView(View):
 
 class ProfileSettingsView(LoginRequiredMixin, UpdateView):
     model = UserInformation
-    fields = ['country', 'continent', 'bio', 'home_spot', 'skill_level', 'board', 'achievements', 'visited_spots']
     template_name = 'profile_settings.html'
-    success_url = f'/profile'
+    form_class = ProfileSettingsForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return f'/profile/{self.request.user.id}/'
 
     def get_object(self, queryset=None):
         user_id = self.request.user.id
