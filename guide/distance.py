@@ -12,7 +12,7 @@ def get_map(location):
 
     place = (latitude, longitude)
 
-    map = folium.Map(width=1214, height=500, location=place, zoom_start=10, max_height=500, max_width=1214)
+    map = folium.Map(width=1248, height=500, location=place, zoom_start=10, max_height=500, max_width=1214)
 
     # creating points on map
     folium.Marker(place).add_to(map)

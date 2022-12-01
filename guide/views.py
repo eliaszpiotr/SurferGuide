@@ -1,5 +1,6 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import response
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -23,6 +24,7 @@ class HomeView(View):
         for spot in spots:
             locations.append(spot.location)
         map = get_map_many_locations(locations)
+
 
         context = {
             'last_added_spots': last_added_spots,
