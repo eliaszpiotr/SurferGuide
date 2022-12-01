@@ -170,20 +170,21 @@ class ProfileView(View):
         photos = Photo.objects.filter(user=user).order_by('-id')[:4]
         visited_spots = UserInformation.objects.get(user=user).visited_spots.all()
         visited_locations = []
+        map = None
         for spot in visited_spots:
             visited_locations.append(spot.location)
         if info.home_spot:
-            map2= get_map(info.home_spot.location)
-        map = get_map_many_locations(visited_locations)
+            visited_locations.append(info.home_spot.location)
+        if len(visited_locations) == 1:
+            map = get_map(visited_locations[0])
+        elif len(visited_locations) > 1:
+            map = get_map_many_locations(visited_locations)
         context = {
             'photos': photos,
             'info': info,
             'visited_spots': visited_spots,
-            'user': user,
             'logged_user': logged_user,
             'map': map,
-            'map2': map2,
-            'visited_locations': visited_locations,
         }
         return render(request, f'profile.html', context)
 

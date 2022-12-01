@@ -26,62 +26,54 @@
             {% endif %}
         </div>
         <br>
-        {% if info %}
-            <div class="card" style="width: 36rem">
-                <div class="card-body">
-                    {% if info.home_spot %}
-                        <p class="card-text">
-                            <span style="font-weight: bold;">Home spot:</span> <a
-                                class="text-secondary text-decoration-none"
-                                href="{% url 'spot' info.home_spot.id %}">{{ info.home_spot }}</a>
-                        </p>
-                    {% endif %}
-                    {% if info.board %}
-                        <p class="card-text">
-                            <span style="font-weight: bold;">Board:</span> {{ info.board }}
-                        </p>
-                    {% endif %}
-                    {% if visited_spots %}
-                        <p class="card-text">
-                            <span style="font-weight: bold;">Visited spots:</span><br>
-                            {% for spot in visited_spots %}
-                                <a href="{% url 'spot' spot.id %}"
-                                   class="text-decoration-none text-secondary">{{ spot }}</a><br>
-                            {% endfor %}
-                        </p>
-                    {% endif %}
-                    {% if info.achievements %}
-                        <p class="card-text">
-                            Achievements:<br>
-                            {% for achievement in info.achievements %}
-                                {{ achievement }}<br>
-                            {% endfor %}
-                        </p>
-                    {% endif %}
-                </div>
-            </div>
-        {% endif %}
-    </div>
 
-
-    <div class="container ">
-        <div class="row ">
-            <div class="col-12 my-3">
-                {% if visited_spots %}
-                    <h1>Visited surfing spots</h1>
-                {% else %}
-                    <h1>Location of {{ info.home_spot }}</h1>
+        <div class="" style="width: 36rem">
+            <div class="card-body">
+                {% if info.home_spot %}
+                    <p class="card-text">
+                        <span style="font-weight: bold;">Home spot:</span> <a
+                            class="text-secondary text-decoration-none"
+                            href="{% url 'spot' info.home_spot.id %}">{{ info.home_spot }}</a>
+                    </p>
                 {% endif %}
-                <div class="rounded my-4" style="max-height: 500px; margin-top: 30px; overflow: hidden">
-                    {% if visited_spots %}
-                        {{ map|safe }}
-                    {% else %}
-                        {{ map2|safe }}
-                    {% endif %}
-                </div>
+                {% if info.board %}
+                    <p class="card-text">
+                        <span style="font-weight: bold;">Board:</span> {{ info.board }}
+                    </p>
+                {% endif %}
+                {% if visited_spots %}
+                    <p class="card-text">
+                        <span style="font-weight: bold;">Visited spots:</span><br>
+                        {% for spot in visited_spots %}
+                            <a href="{% url 'spot' spot.id %}"
+                               class="text-decoration-none text-secondary">{{ spot }}</a><br>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                {% if info.achievements %}
+                    <p class="card-text">
+                        Achievements:<br>
+                        {% for achievement in info.achievements %}
+                            {{ achievement }}<br>
+                        {% endfor %}
+                    </p>
+                {% endif %}
             </div>
         </div>
     </div>
+
+    {% if map %}
+        <div class="container ">
+            <div class="row ">
+                <div class="col-12 my-3">
+                    <h1>Visited surfing spots</h1>
+                    <div class="rounded my-4" style="max-height: 500px; margin-top: 30px; overflow: hidden">
+                        {{ map|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
     {% if photos %}
         <div class="container my-4">

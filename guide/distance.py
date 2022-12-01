@@ -36,3 +36,5 @@ def get_map_many_locations(locations):
     map = map._repr_html_()
 
     return map
+
+
