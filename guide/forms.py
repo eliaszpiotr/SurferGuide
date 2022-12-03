@@ -24,8 +24,7 @@ class SurfSpotForm(forms.ModelForm):
             'swell_size': forms.Select(attrs={'class': 'form-control'}),
             'crowd': forms.Select(attrs={'class': 'form-control'}),
             'danger': forms.CheckboxSelectMultiple(),
-            'latitude': forms.NumberInput(attrs={'hidden': True}),
-            'longitude': forms.NumberInput(attrs={'hidden': True}),
+
         }
 
         labels = {
@@ -37,10 +36,20 @@ class SurfSpotForm(forms.ModelForm):
             'best_season': 'Best season for surfing',
             'difficulty': 'Entry surfing level',
             'danger': 'Dangers on the spot',
-            'latitude': '',
-            'longitude': '',
-
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('name')
+        description = cleaned_data.get('description')
+        continent = cleaned_data.get('continent')
+        country = cleaned_data.get('country')
+        location = cleaned_data.get('location')
+        best_season = cleaned_data.get('best_season')
+        difficulty = cleaned_data.get('difficulty')
+        danger = cleaned_data.get('danger')
+        if not name and not description and not continent and not country and not location and not best_season and not difficulty and not danger:
+            raise ValidationError('You have to write something!')
 
 
 class LoginForm(forms.Form):

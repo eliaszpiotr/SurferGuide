@@ -1,3 +1,5 @@
+import sys
+
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import response
@@ -7,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm, CommentAddForm, ProfileSettingsForm
 from guide.models import SurfSpot, Photo, UserInformation, Comment
-from guide.distance import get_map, get_map_many_locations
+from guide.maps import get_map, get_map_many_locations
 
 
 # Create your views here.
@@ -24,7 +26,6 @@ class HomeView(View):
         for spot in spots:
             locations.append(spot.location)
         map = get_map_many_locations(locations)
-
 
         context = {
             'last_added_spots': last_added_spots,
@@ -93,10 +94,9 @@ class AddSpotView(LoginRequiredMixin, View):
     def post(self, request):
         form = SurfSpotForm(request.POST)
         if form.is_valid():
-            spot = form.save(commit=False)
-            spot.save()
+            spot = form.save()
             return redirect('spot', pk=spot.pk)
-        return render(request, 'add-spot.html', {'form': form})
+        return render(request, 'add_spot.html', {'form': form})
 
 
 class LoginView(View):
@@ -166,11 +166,10 @@ class AddPhotoView(LoginRequiredMixin, CreateView):
 class ProfileView(View):
 
     def get(self, request, pk):
-        logged_user = request.user
-        user = User.objects.get(id=pk)
-        info = UserInformation.objects.get(user=user)
-        photos = Photo.objects.filter(user=user).order_by('-id')[:4]
-        visited_spots = UserInformation.objects.get(user=user).visited_spots.all()
+        profile_user = User.objects.get(id=pk)
+        info = UserInformation.objects.get(user=profile_user)
+        photos = Photo.objects.filter(user=profile_user).order_by('-id')[:4]
+        visited_spots = UserInformation.objects.get(user=profile_user).visited_spots.all()
         visited_locations = []
         map = None
         for spot in visited_spots:
@@ -185,8 +184,9 @@ class ProfileView(View):
             'photos': photos,
             'info': info,
             'visited_spots': visited_spots,
-            'logged_user': logged_user,
             'map': map,
+            'profile_user': profile_user,
+
         }
         return render(request, f'profile.html', context)
 

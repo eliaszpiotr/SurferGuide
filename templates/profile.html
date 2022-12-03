@@ -3,19 +3,16 @@
     <div class="container">
         <div class="col">
             <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
-            {% if logged_user.is_authenticated %}
-                {% if logged_user.username == user.username %}
+            {% if user.is_authenticated %}
                     <a href="{% url 'profile-settings' user.id %}" class="btn btn-outline-dark"
                        style="margin-top: 15px; margin-left: 15px;">Profile Settings</a>
                 {% endif %}
-
-            {% endif %}
         </div>
     </div>
 
     <div class="container my-4">
         <div>
-            <span style="font-weight: bold; font-size: 25px">@{{ user.username }}</span><span
+            <span style="font-weight: bold; font-size: 25px">@{{ profile_user.username }}</span><span
                 style="margin-left: 10px;">{% if info.country %}{{ info.country }}{% endif %} {% if info.continent %},
             {{ info.get_continent_display }}{% endif %}</span><br>
             {% if info.skill_level != None %}

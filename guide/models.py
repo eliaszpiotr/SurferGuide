@@ -88,13 +88,15 @@ class SurfSpot(models.Model):
 
     crowd = models.IntegerField(choices=Crowd.choices)
 
-    class Seasons(models.IntegerChoices):
-        WINTER = 1
-        SPRING = 2
-        SUMMER = 3
-        AUTUMN = 4
+    # class Seasons(models.IntegerChoices):
+    #     WINTER = 1
+    #     SPRING = 2
+    #     SUMMER = 3
+    #     AUTUMN = 4
+    #
+    # best_season = models.IntegerField(choices=Seasons.choices)
 
-    best_season = models.IntegerField(choices=Seasons.choices)
+    season = models.ManyToManyField('Season', blank=True)
 
     class Difficulty(models.IntegerChoices):
         BEGINNER = 1
@@ -106,11 +108,24 @@ class SurfSpot(models.Model):
 
     danger = models.ManyToManyField(Danger, blank=True, null=True)
 
+   # class Verified(models.IntegerChoices):
+
+
+
     def __str__(self):
         return f'{self.name}, {self.continent}'
 
     def get_absolute_url(self):
         return reverse('spot', kwargs={'pk': self.pk})
+
+
+class Season(models.Model):
+    name = models.CharField(max_length=64)
+
+
+class Temperature(models.Model):
+    season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    temperature = models.IntegerField()
 
 
 class Photo(models.Model):

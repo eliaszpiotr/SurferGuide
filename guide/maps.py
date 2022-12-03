@@ -1,7 +1,9 @@
 import folium
 from geopy.geocoders import Nominatim
+from functools import lru_cache
 
 
+# @lru_cache(maxsize=128)
 def get_map(location):
     geocoder = Nominatim(user_agent='eliasz')
 
@@ -21,6 +23,7 @@ def get_map(location):
     return map
 
 
+# @lru_cache(maxsize=128)
 def get_map_many_locations(locations):
     geocoder = Nominatim(user_agent='eliasz')
 
@@ -31,10 +34,10 @@ def get_map_many_locations(locations):
         coordinates = geocoder.geocode(location)
         latitude = coordinates.latitude
         longitude = coordinates.longitude
+
         place = (latitude, longitude)
+
         folium.Marker(place).add_to(map)
     map = map._repr_html_()
 
     return map
-
-

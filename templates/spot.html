@@ -9,7 +9,8 @@
         <div class="card my-4">
             <div class="card-body">
                 <h2 class="card-title my-2">{{ spot.name }} </h2>
-                <h6 class="card-subtitle mb-2 text-muted">{{ spot.location }}, {{ spot.country }} <br>{{ spot.get_continent_display }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{ spot.location }}, {{ spot.country }}
+                    <br>{{ spot.get_continent_display }}</h6>
                 <table class="table table">
                     <thead>
                     <tr>
@@ -43,14 +44,19 @@
                     </tr>
                     <tr>
                         <td>
+                        {% if spot.danger.all %}
                             <p class="card-text">️
-                                <span class="text-danger"
-                                      style="font-size: 20px; font-weight: bold">Dangers!</span><br>
-                                {% for danger in spot.danger.all %}
-                                    &nbsp<b>{{ danger.name }}</b><br>
-                                {% endfor %}
-                            </p>
-                        </td>
+                                    <span class="text-danger"
+                                          style="font-size: 20px; font-weight: bold">Dangers!</span><br>
+                                    {% for danger in spot.danger.all %}
+                                        &nbsp<b>{{ danger.name }}</b><br>
+                                    {% endfor %}
+                                    </p>
+                                {% else %}
+                                    <p class="card-text">️
+                                        <span style="font-size: 20px; font-weight: bold; color: green;">This spot is safe!</span>
+                                    </td>
+                                {% endif %}
                         <td></td>
                     </tr>
                     </tbody>
@@ -132,7 +138,8 @@
                     <ul class="list-group" style="width: 40rem;">
                         {% for comment in comments %}
                             <li class="list-group-item my-2 rounded">
-                                <b><a class="text-decoration-none text-dark" href="{% url 'profile' comment.user.id %}">@{{ comment.user }}:</a></b> {{ comment.text }}<br>{{ comment.date }}
+                                <b><a class="text-decoration-none text-dark"
+                                      href="{% url 'profile' comment.user.id %}">@{{ comment.user }}:</a></b> {{ comment.text }}<br>{{ comment.date }}
                             </li>
                         {% endfor %}
                     </ul>
