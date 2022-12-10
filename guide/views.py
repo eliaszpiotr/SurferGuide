@@ -1,8 +1,5 @@
-import sys
-
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import response
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -10,6 +7,7 @@ from django.views import View
 from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm, CommentAddForm, ProfileSettingsForm
 from guide.models import SurfSpot, Photo, UserInformation, Comment
 from guide.maps import get_map, get_map_many_locations
+from guide.filters import SurfSpotFilter
 
 
 # Create your views here.
@@ -64,18 +62,17 @@ class SpotView(View):
 
     def get(self, request, pk):
         spot = SurfSpot.objects.get(id=pk)
+        best_seasons = spot.best_season.all()
         photos = Photo.objects.filter(surfspot=spot)
-        users = User.objects.all()
         comments = Comment.objects.filter(surfspot=spot)
         form = CommentAddForm()
         photo_form = AddPhotoForm()
-        logged_user = request.user
         map = get_map(spot.location)
         context = {
-            'logged_user': logged_user,
+
             'spot': spot,
+            'best_seasons': best_seasons,
             'photos': photos,
-            'users': users,
             'comments': comments,
             'form': form,
             'photo_form': photo_form,
@@ -223,3 +220,14 @@ class AddCommentView(LoginRequiredMixin, CreateView):
 
     def get_template_names(self):
         return f'/spot/{self.kwargs["pk"]}/'
+
+
+class TripPlannerView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        spots = SurfSpot.objects.all()
+        spots_filter = SurfSpotFilter(request.GET, queryset=spots)
+        return render(request, 'trip_planner.html', {'filter': spots_filter})
+
+
+

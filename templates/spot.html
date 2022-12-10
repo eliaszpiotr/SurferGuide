@@ -11,9 +11,10 @@
                 <h2 class="card-title my-2">{{ spot.name }} </h2>
                 <h6 class="card-subtitle mb-2 text-muted">{{ spot.location }}, {{ spot.country }}
                     <br>{{ spot.get_continent_display }}</h6>
-                <table class="table table">
+                <table class="table">
                     <thead>
                     <tr>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -35,32 +36,49 @@
                         <td>
                             <p class="card-text">
                                 <span style="font-size: 20px; font-weight: bold">Additional information</span><br>
-                                Crowd factor: <span class="text-secondary">{{ spot.get_crowd_display }}</span><br>
-                                Best season: <span class="text-secondary">{{ spot.get_best_season_display }}</span><br>
                                 Entry surfing level: <span
                                     class="text-secondary">{{ spot.get_difficulty_display }}</span><br>
+                                Crowd factor: <span class="text-secondary">{{ spot.get_crowd_display }}</span><br>
+                                {% if  best_seasons %}
+                                    Best seasons:
+                                    {% for season in best_seasons %}
+                                        <span class="text-secondary">{{ season }} </span>
+                                    {% endfor %}
+                                {% endif %}
+                            </p>
+                        </td>
+                        <td>
+                            <p class="card-text">
+                                <span style="font-size: 20px; font-weight: bold">Water temperature</span><br>
+                                Summer: <span class="text-secondary">{{ spot.temperature_in_summer }}°C</span><br>
+                                Spring: <span class="text-secondary">{{ spot.temperature_in_spring }}°C</span><br>
+                                Fall: <span class="text-secondary">{{ spot.temperature_in_fall }}°C</span><br>
+                                Winter: <span class="text-secondary">{{ spot.temperature_in_winter }}°C</span><br>
                             </p>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                        {% if spot.danger.all %}
-                            <p class="card-text">️
+                        <td colspan="3">
+                            {% if spot.danger.all %}
+                                <p class="card-text">️
                                     <span class="text-danger"
                                           style="font-size: 20px; font-weight: bold">Dangers!</span><br>
                                     {% for danger in spot.danger.all %}
                                         &nbsp<b>{{ danger.name }}</b><br>
                                     {% endfor %}
-                                    </p>
-                                {% else %}
-                                    <p class="card-text">️
-                                        <span style="font-size: 20px; font-weight: bold; color: green;">This spot is safe!</span>
-                                    </td>
-                                {% endif %}
+                                </p>
+                            {% else %}
+                                <p class="card-text">️
+                                    <span style="font-size: 20px; font-weight: bold; color: green;">This spot is safe!</span>
+                                </p>
+                                </td>
+                            {% endif %}
                         <td></td>
                     </tr>
                     </tbody>
                 </table>
+
+
                 <div class="card-text" style="overflow: auto; max-height: 150px;">
                     <span style="font-size: 20px; font-weight: bold">Description:</span><br>{{ spot.description }}
                 </div>

@@ -1,7 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import SurfSpot, Photo, Comment, UserInformation
+
+from .models import SurfSpot, Photo, Comment, UserInformation, Season
 
 
 class SurfSpotForm(forms.ModelForm):
@@ -15,7 +16,11 @@ class SurfSpotForm(forms.ModelForm):
             'continent': forms.Select(attrs={'class': 'form-control'}),
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Lisbon'}),
             'country': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Portugal'}),
-            'best_season': forms.Select(attrs={'class': 'form-control'}),
+            'best_season': forms.CheckboxSelectMultiple(),
+            'temperature_in_spring': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '15°C'}),
+            'temperature_in_summer': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '20°C'}),
+            'temperature_in_fall': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '15°C'}),
+            'temperature_in_winter': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '10°C'}),
             'difficulty': forms.Select(attrs={'class': 'form-control'}),
             'best_wind': forms.Select(attrs={'class': 'form-control'}),
             'wave_direction': forms.Select(attrs={'class': 'form-control'}),
@@ -33,9 +38,13 @@ class SurfSpotForm(forms.ModelForm):
             'continent': 'Continent',
             'country': 'Country',
             'location': 'City',
-            'best_season': 'Best season for surfing',
+            'best_season': 'Best seasons for surfing',
             'difficulty': 'Entry surfing level',
             'danger': 'Dangers on the spot',
+            'temperature_in_spring': 'Temperature of water in spring',
+            'temperature_in_summer': 'Temperature of water in summer',
+            'temperature_in_fall': 'Temperature of water in fall',
+            'temperature_in_winter': 'Temperature of water in winter',
         }
 
     def clean(self):
@@ -137,3 +146,5 @@ class ProfileSettingsForm(forms.ModelForm):
             'home_spot': 'continent',
             'visited_spots': 'continent',
         }
+
+

@@ -1,7 +1,62 @@
 {% extends 'home.html' %}
+{% load static %}
 {% block content %}
     <div class="container">
         <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
     </div>
+    <div class="container my-3">
+        <h1>Here you can find best surfing spot for your next trip!</h1>
+    </div>
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <div class="col-md-12" style="margin-top: 15px; max-width: 700px">
+                        <h3 class="my-3">Search for spot</h3>
+                        <div class="form-control my-3">
+                            <form method="get" class=" m-4" class="form-control">
+                                {% csrf_token %}
+                                {{ filter.form.as_p }}
+                                <input class="btn btn-outline-dark " type="submit" value="Submit"/>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-md-12" style="margin-top: 15px; margin-left: 200px; width: 684px; ">
+
+                        <h3 class="my-3">Results</h3>
+                        {% for spot in filter.qs %}
+                            <div class="card my-2">
+                                <div class="card-body">
+                                    <a href="{{ spot.get_absolute_url }}"
+                                       class="text-dark text-decoration-none">{{ spot.name }}</a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="card my-2">
+                                <div class="card-body">
+                                    <div class="card-text">
+                                        <p>Sorry, there is no spot matching your search.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
 
 {% endblock %}
+

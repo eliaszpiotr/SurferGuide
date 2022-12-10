@@ -49,7 +49,7 @@ class SurfSpot(models.Model):
         R = 'R', 'Right'
         B = 'B', 'Both'
 
-    wave_direction = models.CharField(max_length=1, choices=WaveDirection.choices, default='B')
+    wave_direction = models.CharField(max_length=1, choices=WaveDirection.choices)
 
     class SpotType(models.TextChoices):
         B = 'B', 'Beach break'
@@ -88,15 +88,12 @@ class SurfSpot(models.Model):
 
     crowd = models.IntegerField(choices=Crowd.choices)
 
-    # class Seasons(models.IntegerChoices):
-    #     WINTER = 1
-    #     SPRING = 2
-    #     SUMMER = 3
-    #     AUTUMN = 4
-    #
-    # best_season = models.IntegerField(choices=Seasons.choices)
+    best_season = models.ManyToManyField('Season', blank=True)
 
-    season = models.ManyToManyField('Season', blank=True)
+    temperature_in_spring = models.IntegerField(blank=True, null=True)
+    temperature_in_summer = models.IntegerField(blank=True, null=True)
+    temperature_in_fall = models.IntegerField(blank=True, null=True)
+    temperature_in_winter = models.IntegerField(blank=True, null=True)
 
     class Difficulty(models.IntegerChoices):
         BEGINNER = 1
@@ -108,10 +105,6 @@ class SurfSpot(models.Model):
 
     danger = models.ManyToManyField(Danger, blank=True, null=True)
 
-   # class Verified(models.IntegerChoices):
-
-
-
     def __str__(self):
         return f'{self.name}, {self.continent}'
 
@@ -122,10 +115,8 @@ class SurfSpot(models.Model):
 class Season(models.Model):
     name = models.CharField(max_length=64)
 
-
-class Temperature(models.Model):
-    season = models.ForeignKey(Season, on_delete=models.CASCADE)
-    temperature = models.IntegerField()
+    def __str__(self):
+        return self.name
 
 
 class Photo(models.Model):
