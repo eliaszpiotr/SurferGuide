@@ -16,4 +16,6 @@ urlpatterns = [
                   path('profile_settings/<int:pk>/', views.ProfileSettingsView.as_view(), name='profile-settings'),
                   path('add_comment/<int:pk>/', views.AddCommentView.as_view(), name='add-comment'),
                   path(r'^trip_planner/$', views.TripPlannerView.as_view(), name='trip-planner'),
+                  path('spot_edit/<int:pk>/', views.SpotEditView.as_view(), name='spot-edit'),
+                  path('spot_delete/<int:pk>/', views.DeleteSpotView.as_view(), name='spot-delete'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

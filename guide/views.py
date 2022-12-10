@@ -1,6 +1,6 @@
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
@@ -56,6 +56,30 @@ class SpotListView(View):
             'logged_user': logged_user,
         }
         return render(request, 'spot_list.html', context)
+
+
+class SpotEditView(PermissionRequiredMixin, UpdateView):
+    permission_required = 'guide.change_surfspot'
+
+    model = SurfSpot
+    form_class = SurfSpotForm
+    template_name = 'spot_edit.html'
+
+    def get_success_url(self):
+        return f'/spot/{self.kwargs["pk"]}/'
+
+
+class DeleteSpotView(PermissionRequiredMixin, DeleteView):
+    permission_required = 'guide.delete_surfspot'
+
+    model = SurfSpot
+    template_name = 'delete_spot.html'
+    success_url = '/spot-list'
+
+    def post(self, request, pk):
+        spot = SurfSpot.objects.get(id=pk)
+        spot.delete()
+        return redirect('/spot-list')
 
 
 class SpotView(View):
@@ -228,6 +252,3 @@ class TripPlannerView(LoginRequiredMixin, View):
         spots = SurfSpot.objects.all()
         spots_filter = SurfSpotFilter(request.GET, queryset=spots)
         return render(request, 'trip_planner.html', {'filter': spots_filter})
-
-
-
