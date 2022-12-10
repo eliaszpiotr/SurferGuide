@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.urls import reverse_lazy
 
@@ -74,16 +75,7 @@ WSGI_APPLICATION = 'SurferGuide.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'PORT': '5433',
-        'HOST': '127.0.0.1',
-        'NAME': 'surferguide',
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'eliasz',
-        'PASSWORD': 'coderslab',
-    }
-}
+DATABASES = {}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -125,6 +117,13 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = BASE_DIR / 'guide/static/images'
+
+try:
+    from local_settings import DATABASES
+except ModuleNotFoundError:
+    print("No configuration in file local_settings.py!")
+    print("Fill in the details and try again!")
+    exit(0)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
