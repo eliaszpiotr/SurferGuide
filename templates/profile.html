@@ -3,10 +3,13 @@
     <div class="container">
         <div class="col">
             <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
+
             {% if user.is_authenticated %}
+                {% if profile_user.id == user.id %}
                     <a href="{% url 'profile-settings' user.id %}" class="btn btn-outline-dark"
                        style="margin-top: 15px; margin-left: 15px;">Profile Settings</a>
                 {% endif %}
+            {% endif %}
         </div>
     </div>
 
