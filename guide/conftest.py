@@ -4,8 +4,14 @@ from guide.models import Photo, SurfSpot, Comment, UserInformation, Danger, Seas
 
 
 @pytest.fixture
-def user_without_permission():
+def normal_user():
     u = User.objects.create_user('test', '1234')
+    return u
+
+
+@pytest.fixture
+def admin_user():
+    u = User.objects.create_superuser('admin', '1234')
     return u
 
 
@@ -28,11 +34,11 @@ def seasons():
 
 
 @pytest.fixture
-def surfspots():
+def surf_spots():
     lst = []
     danger = Danger.objects.create(name=f'test', description='test')
     season = Season.objects.create(name=f'test')
-    for n in range(10):
+    for n in range(3):
         s = SurfSpot.objects.create(
             name=f'test{n}',
             description='test',
@@ -48,8 +54,6 @@ def surfspots():
             temperature_in_summer=n,
             temperature_in_fall=n,
             temperature_in_winter=n,
-
-
         )
         s.danger.add(danger)
         s.best_season.add(season)
@@ -58,12 +62,12 @@ def surfspots():
 
 
 @pytest.fixture
-def photos(surfspots, user_without_permission):
+def photos(surf_spots, normal_user):
     lst = []
     for n in range(10):
         p = Photo.objects.create(
-            surfspot=surfspots[1],
-            user=user_without_permission,
+            surfspot=surf_spots[1],
+            user=normal_user,
             image='image.jpg',
         )
         lst.append(p)
@@ -71,12 +75,12 @@ def photos(surfspots, user_without_permission):
 
 
 @pytest.fixture
-def comments(surfspots, user_without_permission):
+def comments(surf_spots, normal_user):
     lst = []
     for n in range(10):
         c = Comment.objects.create(
-            surfspot=surfspots[1],
-            user=user_without_permission,
+            surfspot=surf_spots[1],
+            user=normal_user,
             text=n,
         )
         lst.append(c)
@@ -84,17 +88,11 @@ def comments(surfspots, user_without_permission):
 
 
 @pytest.fixture
-def userinformation(user_without_permission, surfspots):
-    n = 1
+def profile_settings(normal_user, surf_spots):
     u = UserInformation.objects.create(
-        user=user_without_permission,
-        country=n,
-        continent=n,
-        bio=n,
-        home_spot=surfspots[n],
-        board=n,
-        skill_level=1,
-        achievements=n,
-        visited_spots=surfspots[n],
+        user=normal_user,
+        country='test',
+        continent='EU',
+        bio='test',
     )
     return u
