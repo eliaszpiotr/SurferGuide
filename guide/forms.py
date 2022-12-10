@@ -1,7 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-
 from .models import SurfSpot, Photo, Comment, UserInformation, Season
 
 
@@ -17,10 +16,7 @@ class SurfSpotForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Lisbon'}),
             'country': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Portugal'}),
             'best_season': forms.CheckboxSelectMultiple(),
-            'temperature_in_spring': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '15°C'}),
-            'temperature_in_summer': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '20°C'}),
-            'temperature_in_fall': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '15°C'}),
-            'temperature_in_winter': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '10°C'}),
+
             'difficulty': forms.Select(attrs={'class': 'form-control'}),
             'best_wind': forms.Select(attrs={'class': 'form-control'}),
             'wave_direction': forms.Select(attrs={'class': 'form-control'}),
@@ -57,6 +53,18 @@ class SurfSpotForm(forms.ModelForm):
         best_season = cleaned_data.get('best_season')
         difficulty = cleaned_data.get('difficulty')
         danger = cleaned_data.get('danger')
+        temperature_in_spring = cleaned_data.get('temperature_in_spring')
+        if temperature_in_spring > 30:
+            raise ValidationError('Temperature in spring cannot be higher than 30°C')
+        temperature_in_summer = cleaned_data.get('temperature_in_summer')
+        if temperature_in_summer > 30:
+            raise ValidationError('Temperature in summer cannot be higher than 30°C')
+        temperature_in_fall = cleaned_data.get('temperature_in_fall')
+        if temperature_in_fall > 30:
+            raise ValidationError('Temperature in fall cannot be higher than 30°C')
+        temperature_in_winter = cleaned_data.get('temperature_in_winter')
+        if temperature_in_winter > 30:
+            raise ValidationError('Temperature in winter cannot be higher than 30°C')
         if not name and not description and not continent and not country and not location and not best_season and not difficulty and not danger:
             raise ValidationError('You have to write something!')
 
@@ -115,8 +123,6 @@ class CommentAddForm(forms.ModelForm):
 
 
 class ProfileSettingsForm(forms.ModelForm):
-    spots_queryset1 = SurfSpot.objects.order_by('continent')
-    spots_queryset2 = SurfSpot.objects.order_by('continent')
 
     class Meta:
         model = UserInformation
@@ -146,5 +152,3 @@ class ProfileSettingsForm(forms.ModelForm):
             'home_spot': 'continent',
             'visited_spots': 'continent',
         }
-
-

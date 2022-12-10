@@ -1,6 +1,4 @@
 from django.db import models
-
-# Create your models here.
 from django.urls import reverse
 
 
@@ -15,21 +13,20 @@ class Danger(models.Model):
 class SurfSpot(models.Model):
     # main info
 
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True, blank=False, null=False)
     description = models.TextField()
-    location = models.CharField(max_length=64)
-    country = models.CharField(max_length=64, blank=True, null=True)
+    location = models.CharField(max_length=64, blank=False, null=False)
+    country = models.CharField(max_length=64, blank=False, null=False)
 
     class Continent(models.TextChoices):
         AFRICA = 'AF', 'Africa'
-        ANTARCTICA = 'AN', 'Antarctica'
         ASIA = 'AS', 'Asia'
         EUROPE = 'EU', 'Europe'
         NORTH_AMERICA = 'NA', 'North America'
         OCEANIA = 'OC', 'Oceania'
         SOUTH_AMERICA = 'SA', 'South America'
 
-    continent = models.CharField(choices=Continent.choices, max_length=2)
+    continent = models.CharField(choices=Continent.choices, max_length=2, blank=False, null=False)
 
     # conditions
     class Wind(models.TextChoices):
@@ -88,7 +85,7 @@ class SurfSpot(models.Model):
 
     crowd = models.IntegerField(choices=Crowd.choices)
 
-    best_season = models.ManyToManyField('Season', blank=True)
+    best_season = models.ManyToManyField('Season', related_name='best_season')
 
     temperature_in_spring = models.IntegerField(blank=True, null=True)
     temperature_in_summer = models.IntegerField(blank=True, null=True)
@@ -101,7 +98,7 @@ class SurfSpot(models.Model):
         ADVANCED = 3
         PRO = 4
 
-    difficulty = models.IntegerField(choices=Difficulty.choices)
+    difficulty = models.IntegerField(choices=Difficulty.choices, blank=True, null=True)
 
     danger = models.ManyToManyField(Danger, blank=True, null=True)
 
@@ -117,6 +114,15 @@ class Season(models.Model):
 
     def __str__(self):
         return self.name
+
+#
+# class Temperature(models.Model):
+#     season = models.ForeignKey(Season, on_delete=models.CASCADE)
+#     temperature = models.IntegerField()
+#     surf_spot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return f'{self.surf_spot.name}, {self.season.name}, {self.temperature}'
 
 
 class Photo(models.Model):
@@ -156,16 +162,6 @@ class UserInformation(models.Model):
     skill_level = models.IntegerField(choices=SkillLevel.choices, blank=True, null=True)
     achievements = models.TextField(blank=True, null=True)
     visited_spots = models.ManyToManyField(SurfSpot, blank=True, null=True, related_name='visited_spots')
-
-    # FUTURE FEATURES
-    # friends = models.ManyToManyField('auth.User', blank=True, null=True)
-
-    # class RankOnSite(models.IntegerChoices):
-    #     KOOK = 1
-    #     LOCAL_GUIDE = 3
-    #     LEGENDARY_SURFER = 4
-    #
-    # rank = models.IntegerField(choices=RankOnSite.choices, blank=True, null=True, default=1)
 
     def __str__(self):
         return f'{self.user.username} information'
