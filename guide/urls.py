@@ -19,4 +19,5 @@ urlpatterns = [
                   path('spot_edit/<int:pk>/', views.SpotEditView.as_view(), name='spot-edit'),
                   path('spot_delete/<int:pk>/', views.DeleteSpotView.as_view(), name='delete'),
                   path('photo_gallery/<int:pk>/', views.PhotoGallery.as_view(), name='photo-gallery'),
+                  path('surfers/', views.SurfersView.as_view(), name='surfers'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

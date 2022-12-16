@@ -7,7 +7,7 @@ from django.views import View
 from guide.forms import SurfSpotForm, RegisterForm, LoginForm, AddPhotoForm, CommentAddForm, ProfileSettingsForm
 from guide.models import SurfSpot, Photo, UserInformation, Comment
 from guide.maps import get_map, get_map_many_locations
-from guide.filters import SurfSpotFilter
+from guide.filters import SurfSpotFilter, SurfersFilter
 
 
 # Create your views here.
@@ -188,7 +188,6 @@ class AddPhotoView(LoginRequiredMixin, CreateView):
         return f'/spot/{self.kwargs["pk"]}/'
 
 
-
 class ProfileView(View):
 
     def get(self, request, pk):
@@ -264,3 +263,10 @@ class PhotoGallery(View):
         photos = Photo.objects.filter(surfspot=pk)
         surfspot = SurfSpot.objects.get(id=pk)
         return render(request, 'photo_gallery.html', {'photos': photos, 'surfspot': surfspot})
+
+
+class SurfersView(View):
+    def get(self, request):
+        users = User.objects.all()
+        filter = SurfersFilter(request.GET, queryset=users)
+        return render(request, 'surfers.html', {'users': users, 'filter': filter})
