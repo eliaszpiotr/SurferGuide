@@ -4,7 +4,6 @@ from guide.models import *
 from guide.forms import *
 
 
-
 # home view tests
 @pytest.mark.django_db
 def test_home_view():
@@ -37,6 +36,7 @@ def test_spot_list_view():
     url = reverse('spot-list')
     response = client.get(url)
     assert response.status_code == 200
+
 
 
 @pytest.mark.django_db
@@ -121,7 +121,7 @@ def test_spot_edit_form(surf_spots, admin_user):
 def test_delete_spot_view(surf_spots, admin_user):
     client = Client()
     client.force_login(admin_user)
-    url = reverse('spot-delete', kwargs={'pk': surf_spots[0].pk})
+    url = reverse('delete', kwargs={'pk': surf_spots[0].pk})
     response = client.get(url)
     assert response.status_code == 200
 
@@ -129,7 +129,7 @@ def test_delete_spot_view(surf_spots, admin_user):
 @pytest.mark.django_db
 def test_delete_spot_view_not_logged(surf_spots):
     client = Client()
-    url = reverse('spot-delete', kwargs={'pk': surf_spots[0].pk})
+    url = reverse('delete', kwargs={'pk': surf_spots[0].pk})
     response = client.get(url)
     assert response.status_code == 302
 
@@ -138,7 +138,7 @@ def test_delete_spot_view_not_logged(surf_spots):
 def test_delete_spot_view_not_admin(surf_spots, normal_user):
     client = Client()
     client.force_login(normal_user)
-    url = reverse('spot-delete', kwargs={'pk': surf_spots[0].pk})
+    url = reverse('delete', kwargs={'pk': surf_spots[0].pk})
     response = client.get(url)
     assert response.status_code == 403
 
@@ -394,4 +394,29 @@ def test_trip_planner_view_filter_valid(normal_user, surf_spots):
     url = reverse('trip-planner')
     response = client.get(url, {'continent': 'EU', 'country': 'PL', 'city': 'Gdynia'})
     assert response.status_code == 200
+
+
+# photo gallery view tests
+
+@pytest.mark.django_db
+def test_photo_gallery_view(surf_spots):
+    client = Client()
+    url = reverse('photo-gallery', kwargs={'pk': surf_spots[0].pk})
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_photo_gallery_context(surf_spots, photos):
+    client = Client()
+    url = reverse('photo-gallery', kwargs={'pk': surf_spots[0].pk})
+    response = client.get(url)
+    assert 'photos' in response.context
+
+
+
+
+
+
+
 
