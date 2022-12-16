@@ -1,7 +1,7 @@
+import pytest
 from django.test import Client
-from guide.conftest import *
-from guide.models import *
-from guide.forms import *
+from django.urls import reverse
+from guide.forms import SurfSpotForm, RegisterForm, LoginForm,  ProfileSettingsForm
 
 
 # home view tests
@@ -412,11 +412,4 @@ def test_photo_gallery_context(surf_spots, photos):
     url = reverse('photo-gallery', kwargs={'pk': surf_spots[0].pk})
     response = client.get(url)
     assert 'photos' in response.context
-
-
-
-
-
-
-
 
