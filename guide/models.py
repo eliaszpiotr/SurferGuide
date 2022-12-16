@@ -115,14 +115,14 @@ class Season(models.Model):
     def __str__(self):
         return self.name
 
-#
-# class Temperature(models.Model):
-#     season = models.ForeignKey(Season, on_delete=models.CASCADE)
-#     temperature = models.IntegerField()
-#     surf_spot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE)
-#
-#     def __str__(self):
-#         return f'{self.surf_spot.name}, {self.season.name}, {self.temperature}'
+
+class Temperature(models.Model):
+    season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    temperature = models.IntegerField()
+    surf_spot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.surf_spot.name}, {self.season.name}, {self.temperature}'
 
 
 class Photo(models.Model):

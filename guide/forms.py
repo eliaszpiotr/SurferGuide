@@ -1,7 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-
-from .models import SurfSpot, Photo, Comment, UserInformation, Season
+from .models import SurfSpot, Photo, Comment, UserInformation, Season, Temperature
 
 
 class SurfSpotForm(forms.ModelForm):
@@ -16,7 +15,6 @@ class SurfSpotForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Lisbon'}),
             'country': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Portugal'}),
             'best_season': forms.CheckboxSelectMultiple(),
-
             'difficulty': forms.Select(attrs={'class': 'form-control'}),
             'best_wind': forms.Select(attrs={'class': 'form-control'}),
             'wave_direction': forms.Select(attrs={'class': 'form-control'}),
@@ -24,8 +22,8 @@ class SurfSpotForm(forms.ModelForm):
             'wave_type': forms.Select(attrs={'class': 'form-control'}),
             'swell_size': forms.Select(attrs={'class': 'form-control'}),
             'crowd': forms.Select(attrs={'class': 'form-control'}),
-            'danger': forms.CheckboxSelectMultiple(),
 
+            'danger': forms.CheckboxSelectMultiple(),
         }
 
         labels = {
@@ -67,6 +65,26 @@ class SurfSpotForm(forms.ModelForm):
             raise ValidationError('Temperature in winter cannot be higher than 30°C')
         if not name and not description and not continent and not country and not location and not best_season and not difficulty and not danger:
             raise ValidationError('You have to write something!')
+
+
+class TemperatureForm(forms.ModelForm):
+    class Meta:
+        model = Temperature
+        fields = '__all__'
+
+        widgets = {
+            'temperature_in_spring': forms.NumberInput(attrs={'class': 'form-control'}),
+            'temperature_in_summer': forms.NumberInput(attrs={'class': 'form-control'}),
+            'temperature_in_fall': forms.NumberInput(attrs={'class': 'form-control'}),
+            'temperature_in_winter': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
+        labels = {
+            'temperature_in_spring': 'Temperature of water in spring',
+            'temperature_in_summer': 'Temperature of water in summer',
+            'temperature_in_fall': 'Temperature of water in fall',
+            'temperature_in_winter': 'Temperature of water in winter',
+        }
 
 
 class LoginForm(forms.Form):
@@ -123,7 +141,6 @@ class CommentAddForm(forms.ModelForm):
 
 
 class ProfileSettingsForm(forms.ModelForm):
-
     class Meta:
         model = UserInformation
         fields = ['country', 'continent', 'bio', 'home_spot', 'skill_level', 'board', 'achievements', 'visited_spots']
