@@ -1,0 +1,35 @@
+{% extends 'home.html' %}
+
+{% block content %}
+    <div class="container">
+        <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
+    </div>
+    <div class="container">
+        <div class="col-m-9">
+            <div class="row my-4">
+                <h3>Photo galery from {{ surfspot.name }}</h3>
+                {% for photo in photos %}
+                    <div class="card m-2" style="width: 18rem;">
+                        <img class="rounded m-3"
+                             style="margin-top: 15px; height: 223px; width: 233px; object-fit: cover;"
+                             src="{{ photo.image.url }}" alt="{{ photo }}">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <a href="{% url 'profile' photo.user_id %}"
+                                   class="text-dark text-decoration-none">
+                                    @{{ photo.user.username }}
+                                </a>
+                            </p>
+                            <p class="card-text">
+                                <span class="text-secondary">{{ photo.surfspot }}</span>,<br>{{ photo.date }}
+                            </p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-center">No photos yet</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -17,5 +17,6 @@ urlpatterns = [
                   path('add_comment/<int:pk>/', views.AddCommentView.as_view(), name='add-comment'),
                   path(r'^trip_planner/$', views.TripPlannerView.as_view(), name='trip-planner'),
                   path('spot_edit/<int:pk>/', views.SpotEditView.as_view(), name='spot-edit'),
-                  path('spot_delete/<int:pk>/', views.DeleteSpotView.as_view(), name='spot-delete'),
+                  path('spot_delete/<int:pk>/', views.DeleteSpotView.as_view(), name='delete'),
+                  path('photo_gallery/<int:pk>/', views.PhotoGallery.as_view(), name='photo-gallery'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

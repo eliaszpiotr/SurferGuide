@@ -3,10 +3,12 @@
 {% block content %}
     <div class="container">
         <a onClick="javascript:history.go(-1);" class="btn btn-dark" style="margin-top: 15px;">Back</a>
-    {% if user.is_superuser %}
-        <a href="{% url 'spot-edit' spot.id %}" class="btn btn-outline-dark" style="margin-top: 15px; margin-left: 20px;">Edit spot</a>
-        <a href="{% url 'spot-delete' spot.id %}" class="btn btn-outline-dark" style="margin-top: 15px; margin-left: 20px;">Delete spot</a>
-    {% endif %}
+        {% if user.is_superuser %}
+            <a href="{% url 'spot-edit' spot.id %}" class="btn btn-outline-dark"
+               style="margin-top: 15px; margin-left: 20px;">Edit spot</a>
+            <a href="{% url 'delete' spot.id %}" class="btn btn-outline-dark"
+               style="margin-top: 15px; margin-left: 20px;">Delete spot</a>
+        {% endif %}
     </div>
 
 
@@ -103,7 +105,9 @@
         <div class="container">
             <div class="col-m-9">
                 <div class="row my-2">
-                    <h3>Photo galery</h3>
+                    <h3>Latest photos <span style="font-size: 15px;"><a href="{% url 'photo-gallery' spot.id %}"
+                                                                        class="text-secondary text-decoration-none">View photo gallery</a></span>
+                    </h3>
                     {% for photo in photos %}
                         <div class="card m-2" style="width: 18rem;">
                             <img class="rounded m-3"

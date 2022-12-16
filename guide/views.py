@@ -73,8 +73,12 @@ class DeleteSpotView(PermissionRequiredMixin, DeleteView):
     permission_required = 'guide.delete_surfspot'
 
     model = SurfSpot
-    template_name = 'delete_spot.html'
+    template_name = 'delete.html'
     success_url = '/spot-list'
+
+    def get(self, request, pk):
+        spot = SurfSpot.objects.get(id=pk)
+        return render(request, 'delete.html', {'spot': spot, 'message': 'Are you sure you want to delete this spot?'})
 
     def post(self, request, pk):
         spot = SurfSpot.objects.get(id=pk)
@@ -184,6 +188,7 @@ class AddPhotoView(LoginRequiredMixin, CreateView):
         return f'/spot/{self.kwargs["pk"]}/'
 
 
+
 class ProfileView(View):
 
     def get(self, request, pk):
@@ -252,3 +257,10 @@ class TripPlannerView(LoginRequiredMixin, View):
         spots = SurfSpot.objects.all()
         spots_filter = SurfSpotFilter(request.GET, queryset=spots)
         return render(request, 'trip_planner.html', {'filter': spots_filter})
+
+
+class PhotoGallery(View):
+    def get(self, request, pk):
+        photos = Photo.objects.filter(surfspot=pk)
+        surfspot = SurfSpot.objects.get(id=pk)
+        return render(request, 'photo_gallery.html', {'photos': photos, 'surfspot': surfspot})
