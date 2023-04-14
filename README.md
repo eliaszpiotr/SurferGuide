@@ -22,10 +22,10 @@ The main functionality was the ability for logged users to add surfing sports by
 
 1. Create a virtual environment by running `python3 -m venv venv` in the project root directory.
 2. Activate the virtual environment by running `source venv/bin/activate`.
-3. Install PostgreSQL on your local machine (but you can skip this step).
-4. Create a new database by running `create database mydatabase;`.
-5. Grant all privileges to the user by running grant all privileges on database mydatabase to myuser.
-6. Create a `local_settings.py` file in the project root directory with the following contents:
+3. Install PostgreSQL on your local machine (but you can skip this step, you can install pgAdmin to make your work with database easier).
+    **Only if you installed PostgreSQL**
+    * Create a new database by running `create database 'name_of_db';`.
+    * Create a `local_settings.py` file in the project root directory with the following contents:
 ```
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
