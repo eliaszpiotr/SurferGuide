@@ -1,6 +1,6 @@
 # Guide for Surfers
 
-Projekt był podsumowaniem i praca zaliczeniową podczas kursu programowania w jezyku Python. Projekt jest swego rodzajem serwisem dla osob surfujacych albo planujacych zaczac uprawiac ten sport. 
+The project was a summary and final work during a Python programming course. The project is a kind of service for people who surf or plan to start practicing this sport.
 
 ## The main assumptions of the project:
 * Connecting  surfers or people interested in surfing
@@ -11,14 +11,14 @@ Projekt był podsumowaniem i praca zaliczeniową podczas kursu programowania w j
 
 The main functionality was the ability for logged users to add surfing sports by creating a database of places
 
-##Installation
+## Installation
 
 1. Clone this repository.
 2. Install Python 3.x on your local machine.
 3. Install the required dependencies by running `pip install -r requirements.txt` in the project root directory.
 
 
-##Setup
+## Setup
 
 1. Create a virtual environment by running `python3 -m venv venv` in the project root directory.
 2. Activate the virtual environment by running `source venv/bin/activate`.
@@ -28,7 +28,9 @@ The main functionality was the ability for logged users to add surfing sports by
 6. Create a `local_settings.py` file in the project root directory with the following contents:
 ```
 # Database
-  # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+
+#Replace PORT, NAME, USER, and PASSWORD with your own values.
 
 DATABASES = {
     'default': {
@@ -40,8 +42,8 @@ DATABASES = {
         'PASSWORD': 'YOUR_PASWORD',
     }
 }
+#Replace mysecretkey, myuser, mypassword, and mydatabase with your own values.
 ```
-Replace mysecretkey, myuser, mypassword, and mydatabase with your own values.
 
 ## Running the project
 
