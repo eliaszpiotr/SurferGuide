@@ -1,4 +1,5 @@
 # Guide for Surfers
+**Currently, this version of the project in this repository is no longer up to date and supported, but the project is still being developed and rebuilt**
 
 The project was a summary and final work during a Python programming course. The project is a kind of service for people who surf or plan to start practicing this sport.
 
@@ -51,15 +52,4 @@ DATABASES = {
 2. You can create superuser to acces admin panel by running `python manage.py createsuperuser` (but you can skip this step).
 3. Start the development server by running `python manage.py runserver`. The web application will be available at http://localhost:8000.
 
-##Usage
-
-The web application allows users to create and view blog posts. To use the application:
-
-1. Open the web application in your web browser at http://localhost:8000.
-2. Click on the "Create a spot" button and enter a valid and content for your post.
-3. Click the "Create" button to create the post.
-4. The post will be displayed on the home page.
-## Tests
-
-To run the tests, run python manage.py test in the project root directory.
 
