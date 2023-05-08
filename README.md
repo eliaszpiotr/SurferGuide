@@ -52,4 +52,6 @@ DATABASES = {
 2. You can create superuser to acces admin panel by running `python manage.py createsuperuser` (but you can skip this step).
 3. Start the development server by running `python manage.py runserver`. The web application will be available at http://localhost:8000.
 
+## Authors
+Eliasz Piotr (eliasz.piotr@icloud.com)
 
