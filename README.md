@@ -1,6 +1,9 @@
 # Guide for Surfers
-**Currently, this version of the project in this repository is no longer up to date and supported, but the project is still being developed and rebuilt**
+**Currently, this version of the project in this repository is no longer up to date and supported, but the project is still being developed and rebuilt!**
 
+- You can check progress here: [SurfingApp](https://github.com/eliaszpiotr/Surfing)
+
+## About project
 The project was a summary and final work during a Python programming course. The project is a kind of service for people who surf or plan to start practicing this sport.
 
 ## The main assumptions of the project:
